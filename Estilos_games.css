@@ -101,13 +101,35 @@
 
 
 .special-caption {
-    background-color: #ffffff; /* Fondo blanco */
-    padding: 5px 10px; /* Relleno alrededor del texto */
-    border-radius: 5px; /* Bordes redondeados opcionales */
-    font-family: Arial, sans-serif; /* Fuente Arial */
-    font-weight: bold; /* Texto en negrita */
-    margin-top: 25px; /* Ajusta esta medida para mover el texto más abajo */
+    background-color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    font-size: 16px; /* Tamaño fijo del texto */
+    max-width: 200px; /* Ajusta esto según el tamaño deseado */
+    display: inline-block; /* Evita que se expanda en pantallas más grandes */
+    text-align: center;
+    margin-top: 25px;
 }
+
+.special-caption {
+    font-size: 2vw; /* Ajusta el tamaño relativo a la pantalla */
+    max-width: 20vw; /* Limita el ancho */
+}
+
+.special-caption {
+    font-size: 14px;
+    padding: 5px 10px;
+}
+
+@media (min-width: 768px) {
+    .special-caption {
+        font-size: 14px; /* Mantiene el tamaño en escritorio */
+        padding: 5px 10px; /* Mantiene el tamaño del fondo */
+    }
+}
+
 
 
 
