@@ -100,18 +100,7 @@
 }
 
 
-.special-caption {
-    background-color: #ffffff;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-family: Arial, sans-serif;
-    font-weight: bold;
-    font-size: 16px; /* Tamaño fijo del texto */
-    max-width: 200px; /* Ajusta esto según el tamaño deseado */
-    display: inline-block; /* Evita que se expanda en pantallas más grandes */
-    text-align: center;
-    margin-top: 25px;
-}
+
 
 .special-caption {
     font-size: 2vw; /* Ajusta el tamaño relativo a la pantalla */
