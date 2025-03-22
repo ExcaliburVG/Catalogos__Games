@@ -2929,6 +2929,15 @@
 
             </script>
 
+            
+            <script>
+                if (/Android/i.test(navigator.userAgent)) {
+                    document.body.classList.add("android");
+                } else {
+                    document.body.classList.add("pc");
+                }
+            </script>
+
 
 </body>
 
