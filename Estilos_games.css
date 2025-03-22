@@ -102,16 +102,13 @@
 
 .special-caption {
     background-color: #ffffff; /* Fondo blanco */
-    padding: 5px 10px; /* Relleno alrededor del texto */
-    border-radius: 5px; /* Bordes redondeados opcionales */
+    padding: 5px 15px; /* Relleno alrededor del texto */
+    border-radius: 100px; /* Bordes redondeados opcionales */
     font-family: Arial, sans-serif; /* Fuente Arial */
     font-weight: bold; /* Texto en negrita */
-    margin-top: 25px; /* Ajusta esta medida para mover el texto más abajo */
-    text-align: center; /* Asegura que el texto esté centrado */
-    display: inline-block; /* Mantiene el tamaño adecuado sin ocupar todo el ancho */
-    max-width: 90%; /* Evita que se expanda demasiado en pantallas grandes */
-    font-size: 16px; /* Tamaño de fuente fijo para mayor consistencia */
+    margin-top: 30px; /* Ajusta esta medida para mover el texto más abajo */
 }
+
 
 
 @media screen and (max-width: 768px) {  
@@ -119,6 +116,7 @@
         font-size: 12px; /* Reduce el tamaño en pantallas más pequeñas */  
     }  
 }  
+
 
 
 
