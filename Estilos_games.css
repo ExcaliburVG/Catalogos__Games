@@ -106,29 +106,22 @@
     border-radius: 5px; 
     font-family: Arial, sans-serif; 
     font-weight: bold; 
-    margin-top: 25px; 
-    text-align: center; 
-    display: block; 
+    margin-top: 10px; /* Ajusta la distancia con la imagen */
+    text-align: center; /* Asegura que el texto esté centrado */
+    display: block; /* Hace que el texto ocupe toda la línea debajo */
     max-width: 90%; 
     font-size: 16px; /* Tamaño base */
 }
 
-@media screen and (max-width: 1024px) { /* Ajuste para tablets y móviles */
-    .special-caption {
-        font-size: 12px; /* Tamaño más pequeño en pantallas pequeñas */
-    }
+.games {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Centra las imágenes y captions */
+    text-align: center; /* Asegura que el caption esté alineado */
 }
 
-@media screen and (max-width: 768px) { /* Ajuste específico para móviles */
+@media screen and (max-width: 768px) { /* Ajuste para móviles */
     .special-caption {
-        font-size: 10px; /* Reduce aún más el tamaño */
+        font-size: 12px; /* Reduce tamaño en pantallas pequeñas */
     }
 }
-
-
-
-
-
-
-
-
