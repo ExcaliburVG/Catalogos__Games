@@ -101,21 +101,30 @@
 
 
 .special-caption {
-    background-color: #ffffff; /* Fondo blanco */
-    padding: 5px 15px; /* Relleno alrededor del texto */
-    border-radius: 100px; /* Bordes redondeados opcionales */
-    font-family: Arial, sans-serif; /* Fuente Arial */
-    font-weight: bold; /* Texto en negrita */
-    margin-top: 30px; /* Ajusta esta medida para mover el texto más abajo */
+    background-color: #ffffff; 
+    padding: 5px 10px; 
+    border-radius: 5px; 
+    font-family: Arial, sans-serif; 
+    font-weight: bold; 
+    margin-top: 25px; 
+    text-align: center; 
+    display: inline-block; 
+    max-width: 90%; 
+    font-size: 16px; /* Tamaño base */
 }
 
+@media screen and (max-width: 1024px) { /* Ajuste para tablets y móviles */
+    .special-caption {
+        font-size: 12px; /* Tamaño más pequeño en pantallas pequeñas */
+    }
+}
 
+@media screen and (max-width: 768px) { /* Ajuste específico para móviles */
+    .special-caption {
+        font-size: 10px; /* Reduce aún más el tamaño */
+    }
+}
 
-@media screen and (max-width: 768px) {  
-    .special-caption {  
-        font-size: 12px; /* Reduce el tamaño en pantallas más pequeñas */  
-    }  
-}  
 
 
 
