@@ -114,6 +114,14 @@
 }
 
 
+@media screen and (max-width: 768px) {  
+    .special-caption {  
+        font-size: 12px; /* Reduce el tamaño en pantallas más pequeñas */  
+    }  
+}  
+
+
+
 
 
 
