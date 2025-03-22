@@ -101,27 +101,20 @@
 
 
 .special-caption {
-    background-color: #ffffff; 
-    padding: 5px 10px; 
-    border-radius: 5px; 
-    font-family: Arial, sans-serif; 
-    font-weight: bold; 
-    margin-top: 10px; /* Ajusta la distancia con la imagen */
-    text-align: center; /* Asegura que el texto esté centrado */
-    display: block; /* Hace que el texto ocupe toda la línea debajo */
-    max-width: 90%; 
-    font-size: 16px; /* Tamaño base */
+    background-color: #ffffff; /* Fondo blanco */
+    padding: 5px 15px; /* Relleno alrededor del texto */
+    border-radius: 100px; /* Bordes redondeados opcionales */
+    font-family: Arial, sans-serif; /* Fuente Arial */
+    font-weight: bold; /* Texto en negrita */
+    margin-top: 30px; /* Ajusta esta medida para mover el texto más abajo */
 }
 
-.games {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center; /* Centra las imágenes y captions */
-    text-align: center; /* Asegura que el caption esté alineado */
-}
 
-@media screen and (max-width: 768px) { /* Ajuste para móviles */
-    .special-caption {
-        font-size: 12px; /* Reduce tamaño en pantallas pequeñas */
-    }
-}
+
+@media screen and (max-width: 768px) {  
+    .special-caption {  
+        font-size: 12px; /* Reduce el tamaño en pantallas más pequeñas */  
+    }  
+}  
+
+
