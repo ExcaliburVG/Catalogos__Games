@@ -107,7 +107,12 @@
     font-family: Arial, sans-serif; /* Fuente Arial */
     font-weight: bold; /* Texto en negrita */
     margin-top: 25px; /* Ajusta esta medida para mover el texto más abajo */
+    text-align: center; /* Asegura que el texto esté centrado */
+    display: inline-block; /* Mantiene el tamaño adecuado sin ocupar todo el ancho */
+    max-width: 90%; /* Evita que se expanda demasiado en pantallas grandes */
+    font-size: 16px; /* Tamaño de fuente fijo para mayor consistencia */
 }
+
 
 
 
