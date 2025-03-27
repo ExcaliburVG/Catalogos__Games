@@ -37,9 +37,9 @@
 }
 
 .games img {
-    width: 170px;
-    height: 220px;
-    margin: -20px;
+    width: 250px;
+    height: 325px;
+    margin: -15px;
     transition: transform 0.2s;
 }
 
