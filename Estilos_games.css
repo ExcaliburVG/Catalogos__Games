@@ -102,7 +102,7 @@
 
 .special-caption {
     background-color: #ffffff; /* Fondo blanco */
-    padding: 5px 15px; /* Relleno alrededor del texto */
+    padding: 5px 60px; /* Relleno alrededor del texto */
     border-radius: 100px; /* Bordes redondeados opcionales */
     font-family: Arial, sans-serif; /* Fuente Arial */
     font-weight: bold; /* Texto en negrita */
