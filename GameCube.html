@@ -1,0 +1,2887 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1024">
+    <meta name="google" content="notranslate">
+    <title>GameCube</title>
+    <link rel="stylesheet" href="Estilos_games.css">
+</head>
+<style>
+    body {
+        background-image: url('img/Gamecube/fondogamecube.webp');
+        background-position: center;
+        color: #000000;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Estilo para el borde azul al seleccionar una figura */
+    @keyframes glow {
+        0% {
+            box-shadow: 0 0 10px rgb(0, 0, 0), 0 0 20px rgb(0, 0, 0), 0 0 30px rgb(7, 7, 7), 0 0 40px rgb(0, 0, 0);
+        }
+
+        50% {
+            box-shadow: 0 0 20px rgb(0, 0, 0), 0 0 30px rgb(0, 0, 0), 0 0 40px rgb(0, 0, 0), 0 0 50px rgb(0, 0, 0);
+        }
+
+        100% {
+            box-shadow: 0 0 10px rgb(0, 0, 0), 0 0 20px rgb(0, 0, 0), 0 0 30px rgb(0, 0, 0), 0 0 40px rgb(0, 0, 0);
+        }
+    }
+
+    .selected {
+        border: 20px solid rgb(0, 0, 0);
+        animation: glow 1.5s infinite alternate;
+    }
+
+
+    /* Posicionamiento del cuadro de suma */
+    #total-suma {
+        position: fixed;
+        top: 8px;
+        right: 10px;
+        /* Cambiado de right a left */
+        background-color: white;
+        border: 8px solid rgb(0, 0, 0);
+        padding: 20px;
+        font-size: 2.3em;
+        font-weight: bold;
+    }
+
+    #mostrar-selecciones {
+        position: fixed;
+        top: 5px;
+        left: 5px;
+        background-color: rgb(0, 0, 0);
+        color: white;
+        border: none;
+        padding: 35px 35px;
+        font-size: 2em;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 10px;
+    }
+
+    #mostrar-selecciones:hover {
+        background-color: rgb(0, 0, 0);
+    }
+
+    #cuadro-selecciones {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        max-width: 800px;
+        /* Más pequeño que antes, porque ahora solo son 2 por fila */
+        background-color: white;
+        border: 5px solid rgb(0, 0, 0);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        padding: 20px;
+        display: none;
+        z-index: 1000;
+        cursor: default;
+    }
+
+    #contenedor-imagenes {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        overflow-x: auto;
+        padding: 110px;
+    }
+
+    #contenedor-imagenes img {
+        max-width: 150px;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #cuadro-selecciones h2 {
+        text-align: center;
+        color: rgb(0, 0, 0);
+        margin-bottom: 10px;
+    }
+
+    /* ✅ Mostrar 2 por fila */
+    #cuadro-selecciones .item {
+        width: 48%;
+        display: inline-block;
+        vertical-align: top;
+        text-align: center;
+        margin: 1%;
+        border: 2px solid rgb(0, 0, 0);
+        border-radius: 10px;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    /* ✅ Imagen rellena el espacio completamente */
+    #cuadro-selecciones .item img {
+        width: 100%;
+        height: 370px;
+        /* Puedes aumentar o reducir este valor */
+        object-fit: fill;
+        /* Rellena todo el espacio, sin recortes */
+        border-radius: 5px;
+    }
+
+    /* Botones */
+    #cuadro-selecciones button {
+        background-color: rgb(0, 0, 0);
+        color: rgb(255, 255, 255);
+        border: none;
+        padding: 33px 30px;
+        font-size: 1.6em;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 10px;
+    }
+
+    #cuadro-selecciones button:hover {
+        background-color: rgb(0, 0, 0);
+    }
+
+    #cerrar-cuadro:hover {
+        background-color: rgb(0, 0, 0);
+    }
+
+
+
+    /* Estilo para impresión */
+    @media print {
+
+        /* Ocultar todo por defecto */
+        body * {
+            display: none;
+        }
+
+        /* Mostrar solo el cuadro de selecciones y su contenido */
+        #cuadro-selecciones,
+        #cuadro-selecciones * {
+            display: block;
+        }
+
+        /* Asegurar que el cuadro de selecciones se muestre correctamente */
+        #cuadro-selecciones {
+            position: static !important;
+            transform: none !important;
+            border: none !important;
+            box-shadow: none !important;
+            width: 100% !important;
+        }
+
+
+    }
+
+
+
+
+
+    @media screen and (max-width: 768px) {
+        .special-caption {
+            font-size: 12px;
+            /* Reduce el tamaño en pantallas más pequeñas */
+        }
+    }
+</style>
+
+<body>
+    <div class="abecedario">
+        <a href="#section-(#)">(#)</a>
+        <a href="#section-A">A</a>
+        <a href="#section-B">B</a>
+        <a href="#section-C">C</a>
+        <a href="#section-D">D</a>
+        <a href="#section-E">E</a>
+        <a href="#section-F">F</a>
+        <a href="#section-G">G</a>
+        <a href="#section-H">H</a>
+        <a href="#section-I">I</a>
+        <a href="#section-J">J</a>
+        <a href="#section-K">K</a>
+        <a href="#section-L">L</a>
+        <a href="#section-M">M</a>
+        <a href="#section-N">N</a>
+        <a href="#section-O">O</a>
+        <a href="#section-P">P</a>
+        <a href="#section-Q">Q</a>
+        <a href="#section-R">R</a>
+        <a href="#section-S">S</a>
+        <a href="#section-T">T</a>
+        <a href="#section-U">U</a>
+        <a href="#section-V">V</a>
+        <a href="#section-W">W</a>
+        <a href="#section-X">X</a>
+        <a href="#section-Y">Y</a>
+        <a href="#section-Z">Z</a>
+    </div>
+
+
+    <div id="total-suma">Total: 0 GB</div>
+    <div id="caption-info" class="caption-info"></div>
+    <button id="mostrar-selecciones">IMPRIMIR🕹️</button>
+
+    <div id="cuadro-selecciones">
+        <button id="cerrar-cuadro">Minimizar</button>
+        <h2>Total Selecciones: <span id="total-seleccionado"></span> GB</h2>
+        <div id="lista-selecciones"></div>
+        <!--<button onclick="window.print()">Imprimir [PDF]</button>-->
+    </div>
+
+
+    <div class="game-section" id="section-(#)">
+        <div class="letter-header" style="color: #ff0051;">SELECCIONE JUEGOS CON UN CLIC EL JUEGO Y LUEGO TOQUE
+            IMPRIMIR🕹️ (LA CAPTURA DE PANTALLA)</div>
+        <div class="games">
+
+            <div class="game-section" id="section-A">
+                <div class="letter-header">A</div>
+                <div class="games">
+                    <figure class="figure-item">
+                        <img src="img/Gamecube/A/aggressive_inline.webp" alt="Game A1">
+                        <figcaption class="special-caption"></figcaption>
+                    </figure>
+                    <figure class="figure-item">
+                        <img src="img/Gamecube/A/alien_hominid.webp" alt="Game A2">
+                        <figcaption class="special-caption"></figcaption>
+                    </figure>
+                    <figure class="figure-item">
+                        <img src="img/Gamecube/A/all_star_baseball_2002.webp" alt="Game A3">
+                        <figcaption class="special-caption"></figcaption>
+                    </figure>
+                    <figure class="figure-item">
+                        <img src="img/Gamecube/A/all_star_baseball_2003.webp" alt="Game A4">
+                        <figcaption class="special-caption"></figcaption>
+                    </figure>
+                    <figure class="figure-item">
+                        <img src="img/Gamecube/A/all_star_baseball_2004.webp" alt="Game A5">
+                        <figcaption class="special-caption"></figcaption>
+                    </figure>
+                    <figure class="figure-item">
+                        <img src="img/Gamecube/A/amazing_island.webp" alt="Game A6">
+                        <figcaption class="special-caption"></figcaption>
+                    </figure>
+                    <figure class="figure-item">
+                        <img src="img/Gamecube/A/american_chopper_2_full_throttle.webp" alt="Game A7">
+                        <figcaption class="special-caption"></figcaption>
+                    </figure>
+                    <figure class="figure-item">
+                        <img src="img/Gamecube/A/animal_crossing.webp" alt="Game A8">
+                        <figcaption class="special-caption"></figcaption>
+                    </figure>
+                    <figure class="figure-item">
+                        <img src="img/Gamecube/A/animaniacs_the_great_edgar_hunt.webp" alt="Game A9">
+                        <figcaption class="special-caption"></figcaption>
+                    </figure>
+                    <figure class="figure-item">
+                        <img src="img/Gamecube/A/aquaman_battle_of_atlantis.webp" alt="Game A10">
+                        <figcaption class="special-caption"></figcaption>
+                    </figure>
+                    <figure class="figure-item">
+                        <img src="img/Gamecube/A/army_men_air_combat_the_elite_missions.webp" alt="Game A11">
+                        <figcaption class="special-caption"></figcaption>
+                    </figure>
+                    <figure class="figure-item">
+                        <img src="img/Gamecube/A/army_men_rts.webp" alt="Game A12">
+                        <figcaption class="special-caption"></figcaption>
+                    </figure>
+                    <figure class="figure-item">
+                        <img src="img/Gamecube/A/army_men_sarges_war.webp" alt="Game A13">
+                        <figcaption class="special-caption"></figcaption>
+                    </figure>
+                    <figure class="figure-item">
+                        <img src="img/Gamecube/A/atv_quad_power_racing_2.webp" alt="Game A14">
+                        <figcaption class="special-caption"></figcaption>
+                    </figure>
+                    <figure class="figure-item">
+                        <img src="img/Gamecube/A/auto_modellista.webp" alt="Game A15">
+                        <figcaption class="special-caption"></figcaption>
+                    </figure>
+                    <figure class="figure-item">
+                        <img src="img/Gamecube/A/avatar_the_last_airbender.webp" alt="Game A16">
+                        <figcaption class="special-caption"></figcaption>
+                    </figure>
+                </div>
+            </div>
+
+            <!--<figure class="figure-item">
+                        <img src="img/Gamecube/A/" alt="Game A17">
+                        <figcaption class="special-caption"></figcaption>
+                    </figure>-->
+        </div>
+    </div>
+
+    <div class="game-section" id="section-B">
+        <div class="letter-header">B</div>
+        <div class="games">
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/backyard_baseball.webp" alt="Game B1">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/backyard_football.webp" alt="Game B2">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/backyard_sports_baseball_2007.webp" alt="Game B3">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/bad_boys_miami_takedown.webp" alt="Game B4">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/baldurs_gate_dark_alliance.webp" alt="Game B5">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/barnyard.webp" alt="Game B6">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/baten_kaitos_eternal_wings.webp" alt="Game B7">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/baten_kaitos_origins.webp" alt="Game B8">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/batman_begins.webp" alt="Game B9">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/batman_dark_tomorrow.webp" alt="Game B10">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/batman_rise_of_sin_tzu.webp" alt="Game B11">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/batman_vengeance.webp" alt="Game B12">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/battalion_wars.webp" alt="Game B13">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/beach_spikers_virtua_beach_volleyball.webp" alt="Game B14">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/beyblade_vforce_super_tournament_battle.webp" alt="Game B15">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/beyond_good_and_evil.webp" alt="Game B16">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/big_air_freestyle.webp" alt="Game B17">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/big_mutha_truckers.webp" alt="Game B18">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/billy_hatcher_and_the_giant_egg.webp" alt="Game B19">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/bionicle.webp" alt="Game B20">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/bionicle_heroes.webp" alt="Game B21">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/black_&_bruised.webp" alt="Game B22">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/bloodrayne.webp" alt="Game B23">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/bloody_roar_primal_fury.webp" alt="Game B24">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/blowout.webp" alt="Game B25">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/bmx_xxx.webp" alt="Game B26">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/bomberman_generation.webp" alt="Game B27">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/bomberman_jetters.webp" alt="Game B28">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/bratz_forever_diamondz.webp" alt="Game B29">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/bratz_rock_angelz.webp" alt="Game B30">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/buffy_the_vampire_slayer_chaos_bleeds.webp" alt="Game B31">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/burnout.webp" alt="Game B32">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/burnout_2_point_of_impact.webp" alt="Game B33">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/B/bust_a_move_3000.webp" alt="Game B34">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+        </div>
+    </div>
+
+    <div class="game-section" id="section-C">
+        <div class="letter-header">C</div>
+        <div class="games">
+            <figure class="figure-item">
+                <img src="img/Gamecube/C/cabelas_big_game_hunter_2005.webp" alt="Game C1">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/C/cabelas_dangerous_hunts_2.webp" alt="Game C2">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/C/cabelas_outdoor_adventures.webp" alt="Game C3">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/C/call_of_duty_2_big_red_one.webp" alt="Game C4">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/C/call_of_duty_finest_hour.webp" alt="Game C5">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/C/capcom_vs_snk_2_eo.webp" alt="Game C6">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/C/carmen_sandiego_the_secret_of_the_stolen_drums.webp" alt="Game C7">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/C/cars.webp" alt="Game C8">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/C/casper_spirit_dimensions.webp" alt="Game C9">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/C/catwoman.webp" alt="Game C10">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/C/cel_damage.webp" alt="Game C11">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/C/chaos_field.webp" alt="Game C12">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/C/charlie_and_the_chocolate_factory.webp" alt="Game C13">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/C/charlies_angels.webp" alt="Game C14">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/C/chibi_robo!.webp" alt="Game C15">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/C/chicken_little.webp" alt="Game C16">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/C/city_racer.webp" alt="Game C17">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/C/codename_kids_next_door_operation_videogame.webp" alt="Game C18">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/C/conflict_desert_storm.webp" alt="Game C19">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/C/conflict_desert_storm_ii_back_to_baghdad.webp" alt="Game C20">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/C/crash_bandicoot_the_wrath_of_cortex.webp" alt="Game C21">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/C/crash_nitro_kart.webp" alt="Game C22">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/C/crash_tag_team_racing.webp" alt="Game C23">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/C/crazy_taxi.webp" alt="Game C24">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/C/cubivore_survival_of_the_fittest.webp" alt="Game C25">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/C/cubix_robots_for_everyone_showdown.webp" alt="Game C26">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/C/curious_george.webp" alt="Game C27">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/C/custom_robo_battle_revolution.webp" alt="Game C28">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+        </div>
+    </div>
+
+    <div class="game-section" id="section-D">
+        <div class="letter-header">D</div>
+        <div class="games">
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Dakar 2 (USA).webp" alt="Game D1">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Dance Dance Revolution Mario Mix (USA).webp" alt="Game D2">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Dark Summit (USA).webp" alt="Game D3">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Darkened Skye (USA).webp" alt="Game D4">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Dave Mirra Freestyle BMX 2 (USA).webp" alt="Game D5">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Dead to Rights (USA).webp" alt="Game D6">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Def Jam Fight for NY (USA).webp" alt="Game D7">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Def Jam Vendetta (USA).webp" alt="Game D8">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Defender (USA).webp" alt="Game D9">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Die Hard Vendetta (USA).webp" alt="Game D10">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Digimon Rumble Arena 2 (USA).webp" alt="Game D11">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Digimon World 4 (USA).webp" alt="Game D12">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Dinotopia The Sunstone Odyssey (USA).webp" alt="Game D13">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Disney Sports Basketball (USA).webp" alt="Game D14">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Disney Sports Football (USA).webp" alt="Game D15">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Disney Sports Skateboarding.webp" alt="Game D16">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Disney Sports Soccer (USA).webp" alt="Game D17">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Disney's Chicken Little (USA).webp" alt="Game D18">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Disney's Extreme Skate Adventure (USA).webp" alt="Game D19">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Disney's Hide and Sneak (USA).webp" alt="Game D20">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Disney's Meet the Robinsons (USA).webp" alt="Game D21">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Disney's Party (USA).webp" alt="Game D22">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Disney's PK Out of the Shadows (USA).webp" alt="Game D23">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Disney's Tarzan Untamed (USA).webp" alt="Game D24">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Donald Duck Goin' Quackers (USA).webp" alt="Game D25">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Donkey Kong Jungle Beat (USA).webp" alt="Game D26">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Donkey Konga (USA).webp" alt="Game D27">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Donkey Konga 2 (USA).webp" alt="Game D28">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Dora the Explorer Journey to the Purple Planet (USA).webp" alt="Game D29">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Dr. Muto (USA).webp" alt="Game D30">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Dragon Ball Z Budokai (USA).webp" alt="Game D31">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Dragon Ball Z Budokai 2 (USA).webp" alt="Game D32">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Dragon Ball Z Sagas (USA).webp" alt="Game D33">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Dragon's Lair 3D (USA).webp" alt="Game D34">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Driven (USA).webp" alt="Game D35">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/D/Drome Racers (USA).webp" alt="Game D36">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+        </div>
+    </div>
+
+    <div class="game-section" id="section-E">
+        <div class="letter-header">E</div>
+        <div class="games">
+            <figure class="figure-item">
+                <img src="img/Gamecube/E/Ed, Edd n Eddy The Mis-Edventures (USA).webp" alt="Game E1">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/E/Egg Mania Eggstreme Madness (USA).webp" alt="Game E2">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/E/Enter the Matrix Disc1 (USA).webp" alt="Game E3">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/E/Eternal Darkness Sanity's Requiem (USA).webp" alt="Game E4">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/E/Evolution Snowboarding (USA).webp" alt="Game E5">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/E/Evolution Worlds (USA).webp" alt="Game E6">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+        </div>
+    </div>
+
+    <div class="game-section" id="section-F">
+        <div class="letter-header">F</div>
+        <div class="games">
+            <figure class="figure-item">
+                <img src="img/Gamecube/F/F1 2002 (USA).webp" alt="Game F1">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/F/Fairly OddParents Breakin' Da Rules (USA).webp" alt="Game F2">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/F/Fairly OddParents Shadow Showdown (USA).webp" alt="Game F3">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/F/Fantastic 4 (USA).webp" alt="Game F4">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/F/FIFA 06 Soccer (USA).webp" alt="Game F5">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/F/FIFA 07 Soccer (USA).webp" alt="Game F6">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/F/FIFA Street (USA).webp" alt="Game F7">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/F/FIFA Street 2 (USA).webp" alt="Game F8">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/F/FIFA World Cup Germany 2006 (USA).webp" alt="Game F9">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/F/Fight Night Round 2 (USA).webp" alt="Game F10">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/F/Final Fantasy Crystal Chronicles (USA).webp" alt="Game F11">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/F/Finding Nemo (USA).webp" alt="Game F12">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/F/Fire Emblem Path of Radiance (USA).webp" alt="Game F13">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/F/Fireblade (USA).webp" alt="Game F14">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/F/Flushed Away (USA).webp" alt="Game F15">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/F/Freaky Flyers Disk1 (USA).webp" alt="Game F16">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/F/Freedom Fighters (USA).webp" alt="Game F17">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/F/Freekstyle (USA).webp" alt="Game F18">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/F/Freestyle MetalX (USA).webp" alt="Game F19">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/F/Freestyle Street Soccer (USA).webp" alt="Game F20">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/F/Frogger Ancient Shadow (USA).webp" alt="Game F21">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/F/Frogger Beyond (USA).webp" alt="Game F22">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/F/Frogger's Adventures The Rescue (USA).webp" alt="Game F23">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/F/From Russia With Love (USA).webp" alt="Game F24">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/F/Future Tactics The Uprising (USA).webp" alt="Game F25">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/F/F-Zero GX (USA).webp" alt="Game F26">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+        </div>
+    </div>
+
+    <div class="game-section" id="section-G">
+        <div class="letter-header">G</div>
+        <div class="games">
+            <figure class="figure-item">
+                <img src="img/Gamecube/G/Gauntlet Dark Legacy (USA).webp" alt="Game G1">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/G/Geist (USA).webp" alt="Game G2">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/G/Gladius (USA).webp" alt="Game G3">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/G/Go! Go! Hypergrind (USA).webp" alt="Game G4">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/G/Goblin Commander Unleash the Horde (USA).webp" alt="Game G5">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/G/Godzilla Destroy All Monsters Melee (USA).webp" alt="Game G6">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/G/GoldenEye Rogue Agent Disk1 (USA).webp" alt="Game G7">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/G/Gotcha Force (USA).webp" alt="Game G8">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/G/Grooverider Slot Car Thunder (USA).webp" alt="Game G9">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/G/Gun (USA).webp" alt="Game G10">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+        </div>
+    </div>
+
+    <div class="game-section" id="section-H">
+        <div class="letter-header">H</div>
+        <div class="games">
+            <figure class="figure-item">
+                <img src="img/Gamecube/H/Happy Feet (USA).webp" alt="Game H1">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/H/Harry Potter and the Chamber of Secrets (USA).webp" alt="Game H2">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/H/Harry Potter and the Goblet of Fire (USA).webp" alt="Game H3">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/H/Harry Potter and the Prisoner of Azkaban (USA).webp" alt="Game H4">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/H/Harry Potter and the Sorcerer's Stone (USA).webp" alt="Game H5">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/H/Harry Potter Quidditch World Cup (USA).webp" alt="Game H6">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/H/Harvest Moon A Wonderful Life (USA).webp" alt="Game H7">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/H/Harvest Moon Another Wonderful Life (USA).webp" alt="Game H8">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/H/Harvest Moon Magical Melody (USA).webp" alt="Game H9">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/H/Hello Kitty Roller Rescue (USA).webp" alt="Game H10">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/H/Hitman 2 Silent Assassin (USA).webp" alt="Game H11">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/H/Hot Wheels Velocity X (USA).webp" alt="Game H12">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/H/Hot Wheels World Race (USA).webp" alt="Game H13">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/H/Hulk (USA).webp" alt="Game H14">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/H/Hunter The Reckoning (USA).webp" alt="Game H15">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+        </div>
+    </div>
+
+    <div class="game-section" id="section-I">
+        <div class="letter-header">I</div>
+        <div class="games">
+            <figure class="figure-item">
+                <img src="img/Gamecube/I/Ice Age 2 The Meltdown (USA).webp" alt="Game I1">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/I/Ikaruga (USA).webp" alt="Game I2">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/I/I-Ninja (USA).webp" alt="Game I3">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+        </div>
+    </div>
+
+    <div class="game-section" id="section-J">
+        <div class="letter-header">J</div>
+        <div class="games">
+            <figure class="figure-item">
+                <img src="img/Gamecube/J/James Bond 007 Agent Under Fire (USA).webp" alt="Game J1">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/J/James Bond 007 Everything or Nothing (USA).webp" alt="Game J2">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/J/James Bond 007 NightFire (USA).webp" alt="Game J3">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/J/Jeremy McGrath Supercross World (USA).webp" alt="Game J4">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/J/Jimmy Neutron Boy Genius (USA).webp" alt="Game J5">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/J/Jimmy Neutron Boy Genius Attack of the Twonkies (USA).webp" alt="Game J6">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/J/Jimmy Neutron Jet Fusion (USA).webp" alt="Game J7">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/J/Judge Dredd Dredd VS Death (USA).webp" alt="Game J8">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+        </div>
+    </div>
+
+    <div class="game-section" id="section-K">
+        <div class="letter-header">K</div>
+        <div class="games">
+            <figure class="figure-item">
+                <img src="img/Gamecube/K/Kao the Kangaroo Round 2 (USA).webp" alt="Game K1">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/K/Karaoke Revolution Party (USA).webp" alt="Game K2">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/K/Killer7 Disk1 (USA).webp" alt="Game K3">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/K/King Arthur (USA).webp" alt="Game K4">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/K/Kirby Air Ride (USA).webp" alt="Game K5">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+        </div>
+    </div>
+
+    <div class="game-section" id="section-L">
+        <div class="letter-header">L</div>
+        <div class="games">
+            <figure class="figure-item">
+                <img src="img/Gamecube/L/Legends of Wrestling (USA).webp" alt="Game L1">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/L/Legends of Wrestling II (USA).webp" alt="Game L2">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/L/Lego Star Wars (USA).webp" alt="Game L3">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/L/Lego Star Wars II The Original Trilogy (USA).webp" alt="Game L4">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/L/Lemony Snicket's A Series of Unfortunate Events (USA).webp" alt="Game L5">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/L/Looney Tunes Back in Action (USA).webp" alt="Game L6">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/L/Lost Kingdoms (USA).webp" alt="Game L7">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/L/Lost Kingdoms II (USA).webp" alt="Game L8">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/L/Lotus Challenge.webp" alt="Game L9">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/L/Luigi's Mansion (USA).webp" alt="Game L10">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+        </div>
+    </div>
+
+    <div class="game-section" id="section-M">
+        <div class="letter-header">M</div>
+        <div class="games">
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Madagascar (USA).webp" alt="Game M1">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Madden NFL 07 (USA).webp" alt="Game M2">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Madden NFL 08 (USA).webp" alt="Game M3">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Major League Baseball 2K6 (USA).webp" alt="Game M4">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Mario Golf Toadstool Tour (USA).webp" alt="Game M5">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Mario Kart Double Dash!! (USA).webp" alt="Game M6">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Mario Party 4 (USA).webp" alt="Game M7">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Mario Party 5 (USA).webp" alt="Game M8">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Mario Party 6 (USA).webp" alt="Game M9">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Mario Party 7 (USA).webp" alt="Game M10">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Mario Power Tennis (USA).webp" alt="Game M11">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Mario Superstar Baseball (USA).webp" alt="Game M12">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Marvel Nemesis Rise of the Imperfects (USA).webp" alt="Game M13">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Mat Hoffman's Pro BMX 2 (USA).webp" alt="Game M14">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/MC Grooves.webp" alt="Game M15">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Medabots Infinity (USA).webp" alt="Game M16">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Medal of Honor European Assault (USA).webp" alt="Game M17">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Medal of Honor Frontline (USA).webp" alt="Game M18">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Medal of Honor Rising Sun - Copy (USA).webp" alt="Game M19">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Mega Man Anniversary Collection (USA).webp" alt="Game M20">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Mega Man Network Transmission (USA).webp" alt="Game M21">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Mega Man X Collection (USA).webp" alt="Game M22">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Mega Man X Command Mission (USA).webp" alt="Game M23">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Men in Black II Alien Escape (USA).webp" alt="Game M24">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Metal Arms Glitch in the System (USA).webp" alt="Game M25">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Metal Gear Solid The Twin Snakes (USA).webp" alt="Game M26">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Metroid Prime (USA).webp" alt="Game M27">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Metroid Prime 2 Echoes (USA).webp" alt="Game M28">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Minority Report Everybody Runs (USA).webp" alt="Game M29">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Mission Impossible Operation Surma (USA).webp" alt="Game M30">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Monopoly Party! (USA).webp" alt="Game M31">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Monster 4x4 Masters of Metal (USA).webp" alt="Game M32">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Monster House (USA).webp" alt="Game M33">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Monster Jam Maximum Destruction (USA).webp" alt="Game M34">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Monsters, Inc. Scream Arena (USA).webp" alt="Game M35">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Mortal Kombat Deadly Alliance (USA).webp" alt="Game M36">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Mortal Kombat Deception (USA).webp" alt="Game M37">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/MX Superfly (USA).webp" alt="Game M38">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/M/Mystic Heroes (USA).webp" alt="Game M39">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+        </div>
+    </div>
+
+    <div class="game-section" id="section-N">
+        <div class="letter-header">N</div>
+        <div class="games">
+            <figure class="figure-item">
+                <img src="img/Gamecube/N/Namco Museum (USA).webp" alt="Game N1">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/N/Namco Museum 50th Anniversary (USA).webp" alt="Game N2">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/N/Naruto Clash of Ninja (USA).webp" alt="Game N3">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/N/Naruto Clash of Ninja 2 (USA).webp" alt="Game N4">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/N/NASCAR 2005 Chase for the Cup (USA).webp" alt="Game N5">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/N/NASCAR Dirt to Daytona (USA).webp" alt="Game N6">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/N/NBA Live 06 (USA).webp" alt="Game N7">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/N/NBA Street (USA).webp" alt="Game N8">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/N/NBA Street V3 (USA).webp" alt="Game N9">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/N/NBA Street Vol. 2 (USA).webp" alt="Game N10">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/N/Need for Speed Carbon (USA).webp" alt="Game N11">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/N/Need for Speed Hot Pursuit 2 (USA).webp" alt="Game N12">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/N/Need for Speed Most Wanted (USA).webp" alt="Game N13">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/N/Need for Speed Underground (USA).webp" alt="Game N14">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/N/Need for Speed Underground 2 (USA).webp" alt="Game N15">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/N/NFL Street (USA).webp" alt="Game N16">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/N/NFL Street 2 (USA).webp" alt="Game N17">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/N/Nickelodeon Party Blast (USA).webp" alt="Game N18">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/N/Nicktoons Battle for Volcano Island (USA).webp" alt="Game N19">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/N/Nicktoons Unite! (USA).webp" alt="Game N20">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+        </div>
+    </div>
+
+    <div class="game-section" id="section-O">
+        <div class="letter-header">O</div>
+        <div class="games">
+            <figure class="figure-item">
+                <img src="img/Gamecube/O/One Piece Grand Adventure (USA).webp" alt="Game O1">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/O/One Piece Grand Battle (USA).webp" alt="Game O2">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/O/One Piece Pirates' Carnival (USA).webp" alt="Game O3">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/O/Open Season (USA).webp" alt="Game O4">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/O/Over the Hedge (USA).webp" alt="Game O5">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+        </div>
+    </div>
+
+    <div class="game-section" id="section-P">
+        <div class="letter-header">P</div>
+        <div class="games">
+            <figure class="figure-item">
+                <img src="img/Gamecube/P/P.N. 03 (USA).webp" alt="Game P1">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/P/Pac-Man Fever (USA).webp" alt="Game P2">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/P/Pac-Man World 2 (USA).webp" alt="Game P3">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/P/Pac-Man World 3 (USA).webp" alt="Game P4">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/P/Pac-Man World Rally (USA).webp" alt="Game P5">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/P/Paper Mario The Thousand-Year Door (USA).webp" alt="Game P6">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/P/Peter Jackson's King Kong The Official Game of the Movie (USA).webp"
+                    alt="Game P7">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/P/Phantasy Star Online Episode I & II (USA).webp" alt="Game P8">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/P/Phantasy Star Online Episode I & II Plus (USA).webp" alt="Game P9">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/P/Phantasy Star Online Episode III C.A.R.D. Revolution (USA).webp"
+                    alt="Game P10">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/P/Piglet's Big Game (USA).webp" alt="Game P11">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/P/Pikmin (USA).webp" alt="Game P12">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/P/Pikmin 2 (USA).webp" alt="Game P13">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/P/Pinball Hall of Fame - The Gottlieb Collection (USA).webp" alt="Game P14">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/P/Pitfall The Lost Expedition (USA).webp" alt="Game P15">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/P/Pokemon Box Ruby and Sapphire (USA).webp" alt="Game P16">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/P/Pokemon Channel (USA).webp" alt="Game P17">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/P/Pokemon Colosseum (USA).webp" alt="Game P18">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/P/Pokemon XD Gale of Darkness (USA).webp" alt="Game P19">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/P/Pool Paradise (USA).webp" alt="Game P20">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/P/Power Rangers Dino Thunder (USA).webp" alt="Game P21">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/P/Powerpuff Girls Relish Rampage (USA).webp" alt="Game P22">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/P/Prince of Persia The Sands of Time (USA).webp" alt="Game P23">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/P/Prince of Persia The Two Thrones (USA).webp" alt="Game P24">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/P/Prince of Persia Warrior Within (USA).webp" alt="Game P25">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/P/Pro Rally (USA).webp" alt="Game P26">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+        </div>
+    </div>
+
+    <div class="game-section" id="section-Q">
+        <div class="letter-header">Q</div>
+        <div class="games">
+
+            <!--<figure class="figure-item">
+                        <img src="img/Gamecube/Q/" alt="Game Q1">
+                        <figcaption class="special-caption"></figcaption>
+                    </figure>-->
+
+        </div>
+    </div>
+
+    <div class="game-section" id="section-R">
+        <div class="letter-header">R</div>
+        <div class="games">
+            <figure class="figure-item">
+                <img src="img/Gamecube/R/R Racing Evolution (USA).webp" alt="Game R1">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/R/rally championship.webp" alt="Game R2">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/R/Rampage Total Destruction (USA).webp" alt="Game R3">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/R/Ratatouille (USA).webp" alt="Game R4">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/R/Rave Master (USA).webp" alt="Game R5">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/R/Rayman 3 Hoodlum Havoc (USA).webp" alt="Game R6">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/R/Rayman Arena (USA).webp" alt="Game R7">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/R/Red Faction II (USA).webp" alt="Game R8">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/R/RedCard 20-03 (USA).webp" alt="Game R9">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/R/Reign of Fire (USA).webp" alt="Game R10">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/R/Resident Evil  Disc1 (USA).webp" alt="Game R11">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/R/Resident Evil 0 Disc1 (USA).webp" alt="Game R12">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/R/Resident Evil 2 (USA).webp" alt="Game R13">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/R/Resident Evil 3 Nemesis (USA).webp" alt="Game R14">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/R/Resident Evil 4 Disc1 (USA).webp" alt="Game R15">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/R/Resident Evil Code Veronica X  Disc1 (USA).webp" alt="Game R16">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/R/Ribbit King (USA).webp" alt="Game R17">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/R/Road Trip Arcade Edition (USA).webp" alt="Game R18">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/R/RoadKill (USA).webp" alt="Game R19">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/R/Robotech Battlecry (USA).webp" alt="Game R20">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/R/Robots (USA).webp" alt="Game R21">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/R/Rocket Power Beach Bandits (USA).webp" alt="Game R22">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/R/Rocky (USA).webp" alt="Game R23">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/R/Rogue Ops (USA).webp" alt="Game R24">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/R/Room Zoom (USA).webp" alt="Game R25">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/R/Rugrats Royal Ransom (USA).webp" alt="Game R26">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+        </div>
+    </div>
+
+    <div class="game-section" id="section-S">
+        <div class="letter-header">S</div>
+        <div class="games">
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Samurai Jack The Shadow of Aku (USA).webp" alt="Game S1">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Scaler (USA).webp" alt="Game S2">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Scooby-Doo! Mystery Mayhem (USA).webp" alt="Game S3">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Scooby-Doo! Night of 100 Frights (USA).webp" alt="Game S4">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Scooby-Doo! Unmasked (USA).webp" alt="Game S5">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Sea World Shamu's Deep Sea Adventures (USA).webp" alt="Game S6">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Second Sight (USA).webp" alt="Game S7">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Sega Soccer Slam (USA).webp" alt="Game S8">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Serious Sam Next Encounter (USA).webp" alt="Game S9">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Shadow the Hedgehog (USA).webp" alt="Game S10">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Shark Tale (USA).webp" alt="Game S11">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Shrek 2 (USA).webp" alt="Game S12">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Shrek Extra Large (USA).webp" alt="Game S13">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Shrek Smash n' Crash Racing (USA).webp" alt="Game S14">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Shrek Super Party (USA).webp" alt="Game S15">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Shrek SuperSlam (USA).webp" alt="Game S16">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Skies of Arcadia Legends (USA).webp" alt="Game S17">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Smashing Drive (USA).webp" alt="Game S18">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Smuggler's Run Warzones (USA).webp" alt="Game S19">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Sonic Adventure 2 Battle (USA).webp" alt="Game S20">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Sonic Adventure DX Director's Cut (USA).webp" alt="Game S21">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Sonic Gems Collection (USA).webp" alt="Game S22">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Sonic Heroes (USA).webp" alt="Game S23">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Sonic Mega Collection (USA).webp" alt="Game S24">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Sonic Riders (USA).webp" alt="Game S25">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/SoulCalibur II (USA).webp" alt="Game S26">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Space Raiders (USA).webp" alt="Game S27">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Spartan Total Warrior (USA).webp" alt="Game S28">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Spawn Armageddon (USA).webp" alt="Game S29">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Speed Kings (USA).webp" alt="Game S30">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Sphinx and the Cursed Mummy (USA).webp" alt="Game S31">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Spider-Man 2 (USA).webp" alt="Game S32">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Spider-Man The Movie (USA).webp" alt="Game S33">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Spirits & Spells (USA).webp" alt="Game S34">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/SpongeBob SquarePants Battle for Bikini Bottom (USA).webp" alt="Game S35">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/SpongeBob SquarePants Creature from the Krusty Krab (USA).webp" alt="Game S36">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/SpongeBob SquarePants Lights, Camera, Pants! (USA).webp" alt="Game S37">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/SpongeBob SquarePants Revenge of the Flying Dutchman (USA).webp"
+                    alt="Game S38">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/SpongeBob SquarePants The  Movie (USA).webp" alt="Game S39">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Spy Hunter (USA).webp" alt="Game S40">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Spyro A Hero's Tail (USA).webp" alt="Game S41">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Spyro Enter the Dragonfly (USA).webp" alt="Game S42">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/SSX 3 (USA).webp" alt="Game S43">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/SSX On Tour (USA).webp" alt="Game S44">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/SSX Tricky (USA).webp" alt="Game S45">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Star Fox Adventures (USA).webp" alt="Game S46">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Star Fox Assault (USA).webp" alt="Game S47">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Star Wars Bounty Hunter (USA).webp" alt="Game S48">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Star Wars Jedi Knight II Jedi Outcast (USA).webp" alt="Game S49">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Star Wars Rogue Leader Rogue Squadron II (USA).webp" alt="Game S50">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Star Wars Rogue Squadron III Rebel Strike (USA).webp" alt="Game S51">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Star Wars The Clone Wars (USA).webp" alt="Game S52">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Street Hoops (USA).webp" alt="Game S53">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Street Racing Syndicate (USA).webp" alt="Game S54">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Strike Force Bowling (USA).webp" alt="Game S55">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Summoner A Goddess Reborn (USA).webp" alt="Game S56">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Super Mario Strikers (USA).webp" alt="Game S57">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Super Mario Sunshine (USA).webp" alt="Game S58">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Super Monkey Ball (USA).webp" alt="Game S59">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Super Monkey Ball 2 (USA).webp" alt="Game S60">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Super Smash Brothers Melee COVER.webp" alt="Game S61">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Superman Shadow of Apokolips (USA).webp" alt="Game S62">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/Surf's Up (USA).webp" alt="Game S63">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/S/SX Superstar (USA).webp" alt="Game S64">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+
+        </div>
+    </div>
+
+    <div class="game-section" id="section-T">
+        <div class="letter-header">T</div>
+        <div class="games">
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Tak 2 The Staff of Dreams (USA).webp" alt="Game T1">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Tak and the Power of Juju (USA).webp" alt="Game T2">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Tales Of Symphonia Disc1 (USA).webp" alt="Game T3">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Taz Wanted (USA).webp" alt="Game T4">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Teen Titans (USA).webp" alt="Game T5">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Teenage Mutant Ninja Turtles (USA).webp" alt="Game T6">
+                <figcaption class="special-caption"> </figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Teenage Mutant N2 Battle Nexus.webp" alt="Game T7">
+                <figcaption class="special-caption"> </figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Teenage Mutant Ninja Turtles 3 Mutant Nightmare (USA).webp" alt="Game T8">
+                <figcaption class="special-caption"> </figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Terminator 3 The Redemption (USA).webp" alt="Game T9">
+                <figcaption class="special-caption"> </figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Tetris Worlds (USA).webp" alt="Game T10">
+                <figcaption class="special-caption"> </figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/The Ant Bully (USA).webp" alt="Game T11">
+                <figcaption class="special-caption"> </figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/The Chronicles of Narnia The Lion, The Witch and The Wardrobe (USA).webp"
+                    alt="Game T12">
+                <figcaption class="special-caption"> </figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/The Grim Adventures of Billy & Mandy (USA).webp" alt="Game T13">
+                <figcaption class="special-caption"> </figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/The Haunted Mansion (USA).webp" alt="Game T14">
+                <figcaption class="special-caption"> </figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/The Hobbit (USA).webp" alt="Game T15">
+                <figcaption class="special-caption"> </figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/The Incredible Hulk Ultimate Destruction (USA).webp" alt="Game T16">
+                <figcaption class="special-caption"> </figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/The Incredibles (USA).webp" alt="Game T17">
+                <figcaption class="special-caption"> </figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/The Incredibles Rise of the Underminer (USA).webp" alt="Game T18">
+                <figcaption class="special-caption"> </figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/The Legend of Spyro A New Beginning (USA).webp" alt="Game T19">
+                <figcaption class="special-caption"> </figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/The Legend of Zelda Collector's Edition (USA).webp" alt="Game T20">
+                <figcaption class="special-caption"> </figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/The Legend of Zelda Four Swords Adventures (USA).webp" alt="Game T21">
+                <figcaption class="special-caption"> </figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/The Legend of Zelda Ocarina of Time  Master Quest (USA).webp" alt="Game T22">
+                <figcaption class="special-caption"> </figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/The Legend of Zelda The Wind Waker (USA).webp" alt="Game T23">
+                <figcaption class="special-caption"> </figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/The Legend of Zelda Twilight Princess (USA).webp" alt="Game T24">
+                <figcaption class="special-caption"> </figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/The Lord of the Rings The Return of the King (USA).webp" alt="Game T25">
+                <figcaption class="special-caption"> </figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/The Lord of the Rings The Third Age Disc1 (USA).webp" alt="Game T26">
+                <figcaption class="special-caption"> </figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/The Lord of the Rings The Two Towers (USA).webp" alt="Game T27">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/The Polar Express (USA).webp" alt="Game T28">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/The Scorpion King Rise of the Akkadian (USA).webp" alt="Game T29">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/The Simpsons Hit & Run (USA).webp" alt="Game T30">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/The Simpsons Road Rage (USA).webp" alt="Game T31">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/The Sims (USA).webp" alt="Game T32">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/The Sims 2 Pets (USA).webp" alt="Game T33">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/The Sims Bustin' Out (USA).webp" alt="Game T34">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/The Sum of All Fears (USA).webp" alt="Game T35">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/The Urbz Sims in the City (USA).webp" alt="Game T36">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/TimeSplitters 2 (USA).webp" alt="Game T37">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/TimeSplitters Future Perfect (USA).webp" alt="Game T38">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/TMNT (USA).webp" alt="Game T39">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/TMNT Mutant Melee (USA).webp" alt="Game T40">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Tom & Jerry in War of the Whiskers (USA).webp" alt="Game T41">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Tom Clancy's Ghost Recon (USA).webp" alt="Game T42">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Tom Clancy's Ghost Recon 2 (USA).webp" alt="Game T43">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Tom Clancy's Rainbow Six 3 (USA).webp" alt="Game T44">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Tom Clancy's Rainbow Six Lockdown (USA).webp" alt="Game T45">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Tom Clancy's Splinter Cell (USA).webp" alt="Game T46">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Tom Clancy's Splinter Cell Chaos Theory.Disk1 (USA).webp" alt="Game T47">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Tom Clancy's Splinter Cell Double Agent Disk1 (USA).webp" alt="Game T48">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Tom Clancy's Splinter Cell Pandora Tomorrow (USA).webp" alt="Game T49">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Tomb Raider Legend (USA).webp" alt="Game T50">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Tonka Rescue Patrol (USA).webp" alt="Game T51">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Tony Hawk's American Wasteland (USA).webp" alt="Game T52">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Tony Hawk's Pro Skater 3 (USA).webp" alt="Game T53">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Tony Hawk's Pro Skater 4 (USA).webp" alt="Game T54">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Tony Hawk's Underground (USA).webp" alt="Game T55">
+                <figcaption class="special-caption"> </figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Tony Hawk's Underground 2 (USA).webp" alt="Game T56">
+                <figcaption class="special-caption"> </figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Top Gun Combat Zones (USA).webp" alt="Game T57">
+                <figcaption class="special-caption"> </figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Trigger Man (USA).webp" alt="Game T58">
+                <figcaption class="special-caption"> </figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/True Crime New York City (USA).webp" alt="Game T59">
+                <figcaption class="special-caption"> </figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/True Crime Streets of LA (USA).webp" alt="Game T60">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Tube Slider (USA).webp" alt="Game T61">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Turok Evolution (USA).webp" alt="Game T62">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Ty the Tasmanian Tiger (USA).webp" alt="Game T63">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Ty the Tasmanian Tiger 2 Bush Rescue (USA).webp" alt="Game T64">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+            <figure class="figure-item">
+                <img src="img/Gamecube/T/Ty the Tasmanian Tiger 3 Night of the Quinkan (USA).webp" alt="Game T65">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+        </div>
+    </div>
+
+    <div class="game-section" id="section-U">
+        <div class="letter-header">U</div>
+        <div class="games">
+            <figure class="figure-item">
+                <img src="img/Gamecube/U/Ultimate Fighting Championship Throwdown (USA).webp" alt="Game U1">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/U/Ultimate Muscle Legends vs. New Generation (USA).webp" alt="Game U2">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/U/Ultimate Spider-Man (USA).webp" alt="Game U3">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/U/Universal Studios Theme Parks Adventure (USA).webp" alt="Game U4">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+        </div>
+    </div>
+
+    <div class="game-section" id="section-V">
+        <div class="letter-header">V</div>
+        <div class="games">
+            <figure class="figure-item">
+                <img src="img/Gamecube/V/Vexx (USA).webp" alt="Game V1">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/V/Viewtiful Joe (USA).webp" alt="Game V2">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/V/Viewtiful Joe 2 (USA).webp" alt="Game V3">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/V/Viewtiful Joe Red Hot Rumble (USA).webp" alt="Game V4">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/V/Virtua Quest (USA).webp" alt="Game V5">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/V/Virtua Striker 2002 (USA).webp" alt="Game V6">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+        </div>
+    </div>
+
+    <div class="game-section" id="section-W">
+        <div class="letter-header">W</div>
+        <div class="games">
+            <figure class="figure-item">
+                <img src="img/Gamecube/W/Wallace & Gromit in Project Zoo (USA).webp" alt="Game W1">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/W/Wario World (USA).webp" alt="Game W2">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/W/WarioWare, Inc. Mega Party Game$! (USA).webp" alt="Game W3">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/W/Whirl Tour (USA).webp" alt="Game W4">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/W/Winnie the Pooh's Rumbly Tumbly Adventure (USA).webp" alt="Game W5">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/W/Worms 3D (USA).webp" alt="Game W6">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/W/Worms Blast (USA).webp" alt="Game W7">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/W/Wreckless The Yakuza Missions (USA).webp" alt="Game W8">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/W/WTA Tour Tennis (USA).webp" alt="Game W9">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/W/WWE Day of Reckoning (USA).webp" alt="Game W10">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/W/WWE Day of Reckoning 2 (USA).webp" alt="Game W11">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/W/WWE WrestleMania X8 (USA).webp" alt="Game W12">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/W/WWE WrestleMania XIX (USA).webp" alt="Game W13">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+        </div>
+    </div>
+
+    <div class="game-section" id="section-X">
+        <div class="letter-header">X</div>
+        <div class="games">
+            <figure class="figure-item">
+                <img src="img/Gamecube/X/X2 Wolverine's Revenge (USA).webp" alt="Game X1">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/X/XGIII Extreme G Racing (USA).webp" alt="Game X2">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/X/XGRA Extreme-G Racing Association (USA).webp" alt="Game X3">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/X/XIII (USA).webp" alt="Game X4">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/X/X-Men Legends (USA).webp" alt="Game X5">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/X/X-Men Legends II Rise of Apocalypse (USA).webp" alt="Game X6">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/X/X-Men Next Dimension (USA).webp" alt="Game X7">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/X/X-Men The Official Game (USA).webp" alt="Game X8">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+        </div>
+    </div>
+
+    <div class="game-section" id="section-Y">
+        <div class="letter-header">Y</div>
+        <div class="games">
+            <figure class="figure-item">
+                <img src="img/Gamecube/Y/Yu-Gi-Oh! The Falsebound Kingdom (USA).webp" alt="Game Y1">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+        </div>
+    </div>
+
+    <div class="game-section" id="section-Z">
+        <div class="letter-header">Z</div>
+        <div class="games">
+            <figure class="figure-item">
+                <img src="img/Gamecube/Z/Zapper (USA).webp" alt="Game Z1">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/Z/Zatch Bell! Mamodo Battles (USA).webp" alt="Game Z2">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/Z/Zatch Bell! Mamodo Fury (USA).webp" alt="Game Z3">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/Z/Zoids Battle Legends (USA).webp" alt="Game Z4">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+            <figure class="figure-item">
+                <img src="img/Gamecube/Z/ZooCube (USA).webp" alt="Game Z5">
+                <figcaption class="special-caption"></figcaption>
+            </figure>
+
+        </div>
+    </div>
+
+    <button class="volver-btn" onclick="window.location.href='index.html'">❌</button>
+
+    <button class="inicio-btn" onclick="window.scrollTo(0, 0);">☝</button>
+
+
+    <script>
+        let totalGB = 0;
+        const figures = document.querySelectorAll('.figure-item');
+        const totalSuma = document.getElementById('total-suma');
+        const mostrarSelecciones = document.getElementById('mostrar-selecciones');
+        const cuadroSelecciones = document.getElementById('cuadro-selecciones');
+        const listaSelecciones = document.getElementById('lista-selecciones');
+        const totalSeleccionado = document.getElementById('total-seleccionado');
+        const cerrarCuadro = document.getElementById('cerrar-cuadro');
+
+        function updateTotal() {
+            totalSuma.textContent = `Total: ${totalGB.toFixed(2)} GB`;
+            totalSeleccionado.textContent = totalGB.toFixed(2);
+        }
+
+        figures.forEach((figure) => {
+            figure.addEventListener('click', function () {
+                const captionText = this.querySelector('.special-caption').textContent;
+                let valueGB = 0;
+                if (captionText.includes('_GB')) {
+                    valueGB = parseFloat(captionText.replace('_GB', ''));
+                } else if (captionText.includes('_MB')) {
+                    valueGB = parseFloat(captionText.replace('_MB', '')) / 1024;
+                }
+
+                if (this.classList.contains('selected')) {
+                    this.classList.remove('selected');
+                    totalGB -= valueGB;
+                } else {
+                    this.classList.add('selected');
+                    totalGB += valueGB;
+                }
+
+                updateTotal();
+            });
+        });
+
+        mostrarSelecciones.addEventListener('click', () => {
+            listaSelecciones.innerHTML = '';
+            const selectedFigures = document.querySelectorAll('.figure-item.selected');
+            selectedFigures.forEach((figure) => {
+                const captionText = figure.querySelector('.special-caption').textContent;
+                const imageSrc = figure.querySelector('img').src;
+
+                const itemDiv = document.createElement('div');
+                itemDiv.classList.add('item');
+
+                const imgElement = document.createElement('img');
+                imgElement.src = imageSrc;
+
+                const captionElement = document.createElement('span');
+                captionElement.textContent = captionText;
+
+                const closeButton = document.createElement('button');
+                closeButton.textContent = 'X';
+                closeButton.classList.add('remove-btn');
+                closeButton.addEventListener('click', () => {
+                    if (confirm(`¿Deseas eliminar ${captionText}?`)) {
+                        figure.classList.remove('selected');
+                        let valueGB = 0;
+                        if (captionText.includes('_GB')) {
+                            valueGB = parseFloat(captionText.replace('_GB', ''));
+                        } else if (captionText.includes('_MB')) {
+                            valueGB = parseFloat(captionText.replace('_MB', '')) / 1024;
+                        }
+                        totalGB -= valueGB;
+                        updateTotal();
+                        itemDiv.remove();
+                    }
+                });
+
+                itemDiv.appendChild(imgElement);
+                itemDiv.appendChild(captionElement);
+                itemDiv.appendChild(closeButton);
+
+                listaSelecciones.appendChild(itemDiv);
+            });
+
+            updateTotal();
+            cuadroSelecciones.style.display = 'block';
+        });
+
+        cerrarCuadro.addEventListener('click', () => {
+            cuadroSelecciones.style.display = 'none';
+        });
+    </script>
+
+    <script>
+        const cuadro = document.getElementById('cuadro-selecciones');
+        let isDragging = false;
+        let offsetX = 0, offsetY = 0;
+
+        // Asegurar que el cuadro tenga `position: absolute`
+        cuadro.style.position = "block";
+
+        // Evitar el desplazamiento de la página al mover el cuadro en móviles
+        function disableScroll(e) {
+            e.preventDefault();
+        }
+
+        // Evento para empezar a arrastrar con el mouse
+        cuadro.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            offsetX = e.clientX - cuadro.offsetLeft;
+            offsetY = e.clientY - cuadro.offsetTop;
+            cuadro.style.cursor = "grabbing";
+        });
+
+        // Evento para mover el cuadro con el mouse
+        document.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                cuadro.style.left = `${e.clientX - offsetX}px`;
+                cuadro.style.top = `${e.clientY - offsetY}px`;
+            }
+        });
+
+        // Evento para soltar el cuadro con el mouse
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            cuadro.style.cursor = "grab";
+        });
+
+        // Evento para empezar a arrastrar con el tacto (evita scroll)
+        cuadro.addEventListener('touchstart', (e) => {
+            const touch = e.touches[0];
+            isDragging = true;
+            offsetX = touch.clientX - cuadro.offsetLeft;
+            offsetY = touch.clientY - cuadro.offsetTop;
+            cuadro.style.cursor = "grabbing";
+
+            // Evitar que la página se desplace
+            document.body.addEventListener('touchmove', disableScroll, { passive: false });
+        });
+
+        // Evento para mover el cuadro con el tacto
+        document.addEventListener('touchmove', (e) => {
+            if (isDragging) {
+                const touch = e.touches[0];
+                cuadro.style.left = `${touch.clientX - offsetX}px`;
+                cuadro.style.top = `${touch.clientY - offsetY}px`;
+            }
+        });
+
+        // Evento para soltar el cuadro con el tacto (reactivar scroll)
+        document.addEventListener('touchend', () => {
+            isDragging = false;
+            cuadro.style.cursor = "grab";
+
+            // Permitir que la página se desplace nuevamente
+            document.body.removeEventListener('touchmove', disableScroll);
+        });
+
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const links = document.querySelectorAll(".abecedario a");
+            const sections = document.querySelectorAll(".game-section");
+
+            // 🔹 Mostrar solo la sección (#) al inicio
+            sections.forEach(section => {
+                section.style.display = section.id === "section-(#)" ? "block" : "none";
+            });
+
+            links.forEach(link => {
+                link.addEventListener("click", e => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute("href").substring(1);
+                    const target = document.getElementById(targetId);
+
+                    if (!target) return;
+
+                    // 🔹 Evitar que (#) desaparezca al hacer clic otra vez
+                    if (targetId === "section-(#)") {
+                        sections.forEach(section => {
+                            section.style.display = section.id === "section-(#)" ? "block" : "none";
+                        });
+                        return;
+                    }
+
+                    // Ocultar todas las secciones
+                    sections.forEach(section => section.style.display = "none");
+
+                    // Mostrar la sección seleccionada y sus padres
+                    let current = target;
+                    while (current && current.classList.contains("game-section")) {
+                        current.style.display = "block";
+                        current = current.parentElement.closest(".game-section");
+                    }
+
+                    // Desplazamiento suave hacia la sección elegida
+                    target.scrollIntoView({ behavior: "smooth" });
+                });
+            });
+        });
+    </script>
+
+
+
+
+
+
+
+
+
+</body>
+
+
+
+</html>
