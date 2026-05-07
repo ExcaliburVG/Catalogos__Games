@@ -1,0 +1,2339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1024">
+    <meta name="google" content="notranslate">
+    <title>Nintendo Wii_U</title>
+    <link rel="stylesheet" href="Estilos_games.css">
+</head>
+
+<style>
+    body {
+        background-image: url('img/Wii_u/fondowii_u.webp');
+        background-position: center;
+        color: #000000;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Estilo para el borde al seleccionar una figura */
+    @keyframes glow {
+        0% {
+            box-shadow: 0 0 10px rgb(255, 111, 0), 0 0 20px rgb(255, 111, 0), 0 0 30px rgb(255, 111, 0), 0 0 40px rgb(255, 111, 0);
+        }
+
+        50% {
+            box-shadow: 0 0 20px rgb(255, 111, 0), 0 0 30px rgb(255, 111, 0), 0 0 40px rgb(255, 111, 0), 0 0 50px rgb(255, 111, 0);
+        }
+
+        100% {
+            box-shadow: 0 0 10px rgb(255, 111, 0), 0 0 20px rgb(255, 111, 0), 0 0 30px rgb(255, 111, 0), 0 0 40px rgb(255, 111, 0);
+        }
+    }
+
+    .selected {
+        border: 18px solid rgb(255, 111, 0);
+        animation: glow 1.5s infinite alternate;
+    }
+
+    /* Posicionamiento del cuadro de suma */
+    #total-suma {
+        position: fixed;
+        top: 8px;
+        right: 10px;
+        background-color: white;
+        border: 8px solid rgb(255, 111, 0);
+        padding: 20px;
+        font-size: 2.3em;
+        font-weight: bold;
+    }
+
+    #mostrar-selecciones {
+        position: fixed;
+        top: 5px;
+        left: 5px;
+        background-color: rgb(255, 111, 0);
+        color: white;
+        border: none;
+        padding: 35px 35px;
+        font-size: 2em;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 10px;
+    }
+
+    #mostrar-selecciones:hover {
+        background-color: rgb(255, 111, 0);
+    }
+
+    #cuadro-selecciones {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        max-width: 800px;
+        background-color: white;
+        border: 5px solid rgb(255, 111, 0);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        padding: 20px;
+        display: none;
+        z-index: 1000;
+        cursor: default;
+    }
+
+    #contenedor-imagenes {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        overflow-x: auto;
+        padding: 110px;
+    }
+
+    #contenedor-imagenes img {
+        max-width: 150px;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #cuadro-selecciones h2 {
+        text-align: center;
+        color: rgb(0, 0, 0);
+        margin-bottom: 10px;
+    }
+
+    /* Mostrar 2 por fila */
+    #cuadro-selecciones .item {
+        width: 48%;
+        display: inline-block;
+        vertical-align: top;
+        text-align: center;
+        margin: 1%;
+        border: 2px solid rgb(255, 111, 0);
+        border-radius: 10px;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    /* Imagen rellena el espacio completamente */
+    #cuadro-selecciones .item img {
+        width: 100%;
+        height: 370px;
+        object-fit: fill;
+        border-radius: 5px;
+    }
+
+    /* Botones */
+    #cuadro-selecciones button {
+        background-color: rgb(255, 111, 0);
+        color: rgb(0, 0, 0);
+        border: none;
+        padding: 33px 30px;
+        font-size: 1.6em;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 10px;
+    }
+
+    #cuadro-selecciones button:hover {
+        background-color: rgb(255, 111, 0);
+    }
+
+    #cerrar-cuadro:hover {
+        background-color: rgb(255, 111, 0);
+    }
+
+    .abecedario {
+        text-align: center;
+        margin: 120px 0;
+        background-color: black;
+        /* fondo negro */
+        padding: 20px;
+    }
+
+    .abecedario a {
+        color: rgb(255, 111, 0);
+        /* naranja */
+        margin: 0 10px;
+        text-decoration: none;
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    /* opcional: efecto al pasar el mouse */
+    .abecedario a:hover {
+        color: white;
+    }
+
+    /* Estilo para impresión */
+    @media print {
+        body * {
+            display: none;
+        }
+
+        #cuadro-selecciones,
+        #cuadro-selecciones * {
+            display: block;
+        }
+
+        #cuadro-selecciones {
+            position: static !important;
+            transform: none !important;
+            border: none !important;
+            box-shadow: none !important;
+            width: 100% !important;
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        .special-caption {
+            font-size: 12px;
+        }
+    }
+</style>
+
+<body>
+    <div class="abecedario">
+        <a href="#section-(#)">(#)</a>
+        <a href="#section-A">A</a>
+        <a href="#section-B">B</a>
+        <a href="#section-C">C</a>
+        <a href="#section-D">D</a>
+        <a href="#section-E">E</a>
+        <a href="#section-F">F</a>
+        <a href="#section-G">G</a>
+        <a href="#section-H">H</a>
+        <a href="#section-I">I</a>
+        <a href="#section-J">J</a>
+        <a href="#section-K">K</a>
+        <a href="#section-L">L</a>
+        <a href="#section-M">M</a>
+        <a href="#section-N">N</a>
+        <a href="#section-O">O</a>
+        <a href="#section-P">P</a>
+        <a href="#section-Q">Q</a>
+        <a href="#section-R">R</a>
+        <a href="#section-S">S</a>
+        <a href="#section-T">T</a>
+        <a href="#section-U">U</a>
+        <a href="#section-V">V</a>
+        <a href="#section-W">W</a>
+        <a href="#section-X">X</a>
+        <a href="#section-Y">Y</a>
+        <a href="#section-Z">Z</a>
+    </div>
+
+    <div id="total-suma">Total: 0 GB</div>
+    <div id="caption-info" class="caption-info"></div>
+    <button id="mostrar-selecciones">IMPRIMIR🕹️</button>
+
+    <div id="cuadro-selecciones">
+        <button id="cerrar-cuadro">Minimizar</button>
+        <h2>Total Selecciones: <span id="total-seleccionado"></span> GB</h2>
+        <div id="lista-selecciones"></div>
+    </div>
+
+    <div class="game-section" id="section-(#)">
+        <div class="letter-header" style="color: #ff0000;">SELECCIONE JUEGOS CON UN CLIC EL JUEGO Y LUEGO TOQUE
+            IMPRIMIR🕹️ (LA CAPTURA DE PANTALLA)</div>
+        <div class="games">
+
+            <div class="game-section" id="section-(#)">
+                <div class="letter-header" style="color: #002aff;">ELIJA LOS JUEGOS DEPENDIENDO LA CAPACIDAD DE LA MICRO
+                    SD O USB</div>
+                <div class="games">
+
+                    <div class="game-section" id="section-(#)">
+                        <div class="letter-header">(#)</div>
+                        <div class="games">
+
+
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/AFPEG9.webp" alt="Game 1#">
+                                <figcaption class="special-caption">1_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/ASVE52.webp" alt="Game 4#">
+                                <figcaption class="special-caption">9.46_GB</figcaption>
+                            </figure>
+
+                            <!--<figure class="figure-item">
+                <img src="img/Wii_u/" alt="Game 10#">
+                <figcaption class="special-caption">_GB</figcaption>
+            </figure>-->
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-A">
+                        <div class="letter-header">A</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/A/AA9E.webp" alt="Game A1">
+                                <figcaption class="special-caption">6.16_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/A/AALE01.webp" alt="Game A2">
+                                <figcaption class="special-caption">3.02_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/A/ADVEG9.webp" alt="Game A5">
+                                <figcaption class="special-caption">2.05_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/A/AGRE52.webp" alt="Game A7">
+                                <figcaption class="special-caption">2.31_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/A/AMVE41.webp" alt="Game A10">
+                                <figcaption class="special-caption">3.35_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/A/ANRE52.webp" alt="Game A11">
+                                <figcaption class="special-caption">2.69_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/A/ASBE41.webp" alt="Game A13">
+                                <figcaption class="special-caption">14_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/A/ASSE41.webp" alt="Game A14">
+                                <figcaption class="special-caption">17_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/A/AVEE0W.webp" alt="Game A15">
+                                <figcaption class="special-caption">1.4_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/A/BFNEVZ.webp" alt="Game A17">
+                                <figcaption class="special-caption">2.66_GB</figcaption>
+                            </figure>
+
+                            <!--<figure class="figure-item">
+                        <img src="img/Wii_u/A/" alt="Game A28">
+                        <figcaption class="special-caption">_GB</figcaption>
+                    </figure>-->
+
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-B">
+                        <div class="letter-header">B</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/B/AAFE01.webp" alt="Game B1">
+                                <figcaption class="special-caption">13_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/B/ABBEVZ.webp" alt="Game B2">
+                                <figcaption class="special-caption">3.78_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/B/ABEEG9.webp" alt="Game B3">
+                                <figcaption class="special-caption">3.09_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/B/ABLE.webp" alt="Game B5">
+                                <figcaption class="special-caption">4_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/B/ABPE.webp" alt="Game B6">
+                                <figcaption class="special-caption">1.64_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/B/ABTEWR.webp" alt="Game B7">
+                                <figcaption class="special-caption">18.6_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/B/ABVEG9.webp" alt="Game B8">
+                                <figcaption class="special-caption">3.1_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/B/ACEE52.webp" alt="Game B10">
+                                <figcaption class="special-caption">4_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/B/AQUE01.webp" alt="Game B12">
+                                <figcaption class="special-caption">15.52_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/B/AZEEWR.webp" alt="Game B15">
+                                <figcaption class="special-caption">15.79_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/B/BRQEVZ.webp" alt="Game B18">
+                                <figcaption class="special-caption">2.66_GB</figcaption>
+                            </figure>
+
+                            <!--<figure class="figure-item">
+                        <img src="img/Wii_u/B/" alt="Game B28">
+                        <figcaption class="special-caption">_GB</figcaption>
+                    </figure>-->
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-C">
+                        <div class="letter-header">C</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/C/ACAE52.webp" alt="Game C1">
+                                <figcaption class="special-caption">6.1_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/C/ACCE.webp" alt="Game C2">
+                                <figcaption class="special-caption">500_MB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/C/ACEE52.webp" alt="Game C3">
+                                <figcaption class="special-caption">4_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/C/ACPE52.webp" alt="Game C8">
+                                <figcaption class="special-caption">17.73_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/C/AECE52.webp" alt="Game C11">
+                                <figcaption class="special-caption">19_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/C/AKBE01.webp" alt="Game C13">
+                                <figcaption class="special-caption">2.55_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/C/BA4EWR.webp" alt="Game C17">
+                                <figcaption class="special-caption">4.13_GB</figcaption>
+                            </figure>
+
+
+                            <!--<figure class="figure-item">
+                        <img src="img/Wii_u/C/" alt="Game C41">
+                        <figcaption class="special-caption">_GB</figcaption>
+                    </figure>-->
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-D">
+                        <div class="letter-header">D</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/D/AD2E78.webp" alt="Game D2">
+                                <figcaption class="special-caption">9.44_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/D/ADNE01.webp" alt="Game D5">
+                                <figcaption class="special-caption">15_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/D/ADXEGD.webp" alt="Game D8">
+                                <figcaption class="special-caption">15_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/D/ARKE01.webp" alt="Game D13">
+                                <figcaption class="special-caption">11.8_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/D/ATDEVZ.webp" alt="Game D14">
+                                <figcaption class="special-caption">1.5_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/D/BEDE6V.webp" alt="Game D22">
+                                <figcaption class="special-caption">12.26_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/D/WDKE08.webp" alt="Game D27">
+                                <figcaption class="special-caption">1.78_GB</figcaption>
+                            </figure>
+
+                            <!--<figure class="figure-item">
+                        <img src="img/Wii_u/D/" alt="Game D31">
+                        <figcaption class="special-caption">_GB</figcaption>
+                    </figure>-->
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-E">
+                        <div class="letter-header">E</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/E/AEME4Q.webp" alt="Game E5">
+                                <figcaption class="special-caption">7.31_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/E/ASPE41.webp" alt="Game E9">
+                                <figcaption class="special-caption">1.69_GB</figcaption>
+                            </figure>
+
+
+                            <!--<figure class="figure-item">
+                        <img src="img/Wii_u/E/" alt="Game E15">
+                        <figcaption class="special-caption">_GB</figcaption>
+                    </figure>-->
+
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-F">
+                        <div class="letter-header">F</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/F/AF3E69.webp" alt="Game F1">
+                                <figcaption class="special-caption">8_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/F/AF6E52.webp" alt="Game F4">
+                                <figcaption class="special-caption">2_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/F/AFBEGT.webp" alt="Game F7">
+                                <figcaption class="special-caption">600_MB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/F/AFME.webp" alt="Game F10">
+                                <figcaption class="special-caption">11.5_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/F/AL5E.webp" alt="Game F14">
+                                <figcaption class="special-caption">15.46_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/F/WFSE.webp" alt="Game F19">
+                                <figcaption class="special-caption">2_GB</figcaption>
+                            </figure>
+
+                            <!--<figure class="figure-item">
+                        <img src="img/Wii_u/F/" alt="Game F23">
+                        <figcaption class="special-caption">_GB</figcaption>
+                    </figure>-->
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-G">
+                        <div class="letter-header">G</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/G/AGPEWR.webp" alt="Game G5">
+                                <figcaption class="special-caption">1.77_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/G/ASAE01.webp" alt="Game G10">
+                                <figcaption class="special-caption">4.36_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/G/WGCE.webp" alt="Game G16">
+                                <figcaption class="special-caption">800_MB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/G/WGSE.webp" alt="Game G18">
+                                <figcaption class="special-caption">3.54_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/G/WGSZCX.webp" alt="Game G19">
+                                <figcaption class="special-caption">2.9_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/G/WGVE.webp" alt="Game G20">
+                                <figcaption class="special-caption">670_MB</figcaption>
+                            </figure>
+
+                            <!--<figure class="figure-item">
+                        <img src="img/Wii_u/G/" alt="Game G21">
+                        <figcaption class="special-caption">_GB</figcaption>
+                    </figure>-->
+
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-H">
+                        <div class="letter-header">H</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/H/AHKEYM.webp" alt="Game H2">
+                                <figcaption class="special-caption">1.37_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/H/AHWEWR.webp" alt="Game H4">
+                                <figcaption class="special-caption">3.3_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/H/BHBE.webp" alt="Game H5">
+                                <figcaption class="special-caption">670_MB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/H/BHSE.webp" alt="Game H7">
+                                <figcaption class="special-caption">795_MB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/H/BWPE01.webp" alt="Game H8">
+                                <figcaption class="special-caption">7.75_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/H/WHTE.webp" alt="Game H9">
+                                <figcaption class="special-caption">1.7_GB</figcaption>
+                            </figure>
+
+                            <!--<figure class="figure-item">
+                        <img src="img/Wii_u/H/" alt="Game H10">
+                        <figcaption class="special-caption">_GB</figcaption>
+                    </figure>-->
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-I">
+                        <div class="letter-header">I</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/I/ADRE4Q.webp" alt="Game I1">
+                                <figcaption class="special-caption">12.6_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/I/ADSE4Q.webp" alt="Game I2">
+                                <figcaption class="special-caption">11_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/I/AFVE.webp" alt="Game I3">
+                                <figcaption class="special-caption">1.64_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/I/AJSEWR.webp" alt="Game I4">
+                                <figcaption class="special-caption">7.50_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/I/ARQE.webp" alt="Game I6">
+                                <figcaption class="special-caption">2.20_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/I/BD3E4Q.webp" alt="Game I7">
+                                <figcaption class="special-caption">10.17_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/I/BRNE.webp" alt="Game I8">
+                                <figcaption class="special-caption">1.50_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/I/WDWE.webp" alt="Game I9">
+                                <figcaption class="special-caption">1.10_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/I/WSFE.webp" alt="Game I11">
+                                <figcaption class="special-caption">460_MB</figcaption>
+                            </figure>
+
+                            <!--<figure class="figure-item">
+                        <img src="img/Wii_u/I/" alt="Game I12">
+                        <figcaption class="special-caption">_GB</figcaption>
+                    </figure>-->
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-J">
+                        <div class="letter-header">J</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/J/ADPE41.webp" alt="Game J1">
+                                <figcaption class="special-caption">6.55_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/J/AJ5E41.webp" alt="Game J2">
+                                <figcaption class="special-caption">13.65_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/J/AJ6E41.webp" alt="Game J3">
+                                <figcaption class="special-caption">16.24_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/J/AJDE41.webp" alt="Game J4">
+                                <figcaption class="special-caption">15.13_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/J/AJEE.webp" alt="Game J5">
+                                <figcaption class="special-caption">2.96_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/J/AJKE41.webp" alt="Game J7">
+                                <figcaption class="special-caption">6.6_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/J/AJQE.webp" alt="Game J10">
+                                <figcaption class="special-caption">225_MB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/J/AJVE.webp" alt="Game J11">
+                                <figcaption class="special-caption">1.12_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/J/BJ7E41.webp" alt="Game J12">
+                                <figcaption class="special-caption">14.16_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/J/BJ8E41.webp" alt="Game J13">
+                                <figcaption class="special-caption">16_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/J/BJDE41.webp" alt="Game J14">
+                                <figcaption class="special-caption">11_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/J/HJDE41.webp" alt="Game J16">
+                                <figcaption class="special-caption">16.30_GB</figcaption>
+                            </figure>
+
+                            <!--<figure class="figure-item">
+                        <img src="img/Wii_u/J/" alt="Game J17">
+                        <figcaption class="special-caption">_GB</figcaption>
+                    </figure>-->
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-K">
+                        <div class="letter-header">K</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/K/AK2E.webp" alt="Game K1">
+                                <figcaption class="special-caption">222_MB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/K/AKKE.webp" alt="Game K2">
+                                <figcaption class="special-caption">2.88_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/K/AXYE01.webp" alt="Game K3">
+                                <figcaption class="special-caption">2.82_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/K/BKFEVZ.webp" alt="Game K4">
+                                <figcaption class="special-caption">2.70_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/K/VADE.webp" alt="Game K5">
+                                <figcaption class="special-caption">1.19_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/K/WBCE.webp" alt="Game K6">
+                                <figcaption class="special-caption">555_MB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/K/WKBE.webp" alt="Game K7">
+                                <figcaption class="special-caption">1_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/K/WKFE.webp" alt="Game K8">
+                                <figcaption class="special-caption">97.98_MB</figcaption>
+                            </figure>
+
+                            <!--<figure class="figure-item">
+                        <img src="img/Wii_u/K/" alt="Game K9">
+                        <figcaption class="special-caption">_GB</figcaption>
+                    </figure>-->
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-L">
+                        <div class="letter-header">L</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/L/AL2E.webp" alt="Game L1">
+                                <figcaption class="special-caption">257_MB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/L/AL6E.webp" alt="Game L2">
+                                <figcaption class="special-caption">69_MB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/L/ALAEWR.webp" alt="Game L3">
+                                <figcaption class="special-caption">7.50_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/L/ALBEWR.webp" alt="Game L4">
+                                <figcaption class="special-caption">4.7_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/L/ALHEWR.webp" alt="Game L5">
+                                <figcaption class="special-caption">7.6_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/L/ALJEWR.webp" alt="Game L6">
+                                <figcaption class="special-caption">8_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/L/ALMEWR.webp" alt="Game L7">
+                                <figcaption class="special-caption">6.10_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/L/ALREWR.webp" alt="Game L8">
+                                <figcaption class="special-caption">7.80_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/L/ALUE.webp" alt="Game L9">
+                                <figcaption class="special-caption">407_MB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/L/ALVE.webp" alt="Game L10">
+                                <figcaption class="special-caption">87_MB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/L/APHE.webp" alt="Game L11">
+                                <figcaption class="special-caption">2.6_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/L/APLE01.webp" alt="Game L12">
+                                <figcaption class="special-caption">20_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/L/APZEWR.webp" alt="Game L13">
+                                <figcaption class="special-caption">6.10_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/L/BLGEWR.webp" alt="Game L14">
+                                <figcaption class="special-caption">6.5_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/L/BLKE6V.webp" alt="Game L15">
+                                <figcaption class="special-caption">4_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/L/BLPE.webp" alt="Game L16">
+                                <figcaption class="special-caption">1.1_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/L/BSWE.webp" alt="Game L17">
+                                <figcaption class="special-caption">217_MB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/L/BTMEWR.webp" alt="Game L18">
+                                <figcaption class="special-caption">7.7_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/L/WLCE.webp" alt="Game L19">
+                                <figcaption class="special-caption">880_MB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/L/WLFE.webp" alt="Game L20">
+                                <figcaption class="special-caption">120_MB</figcaption>
+                            </figure>
+
+                            <!--<figure class="figure-item">
+                        <img src="img/Wii_u/L/" alt="Game L21">
+                        <figcaption class="special-caption">_GB</figcaption>
+                    </figure>-->
+
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-M">
+                        <div class="letter-header">M</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/ABAE01.webp" alt="Game M1">
+                                <figcaption class="special-caption">3.2_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/ABJE01.webp" alt="Game M2">
+                                <figcaption class="special-caption">3.1_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/AC2EVZ.webp" alt="Game M3">
+                                <figcaption class="special-caption">3.4_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/AHDE08.webp" alt="Game M5">
+                                <figcaption class="special-caption">6.8_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/AM5E.webp" alt="Game M6">
+                                <figcaption class="special-caption">85_MB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/AMDE69.webp" alt="Game M7">
+                                <figcaption class="special-caption">5_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/AMKE01.webp" alt="Game M9">
+                                <figcaption class="special-caption">6.7_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/AMPE.webp" alt="Game M10">
+                                <figcaption class="special-caption">1.5_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/AMQEJJ.webp" alt="Game M11">
+                                <figcaption class="special-caption">4.9_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/AMTE.webp" alt="Game M12">
+                                <figcaption class="special-caption">84_MB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/AMUE.webp" alt="Game M13">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/ANSE69.webp" alt="Game M14">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/AUMED2.webp" alt="Game M15">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/AUMEDU.webp" alt="Game M16">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/AURE01.webp" alt="Game M17">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/AVXE01.webp" alt="Game M18">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/BAKETL.webp" alt="Game M19">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/BCRE.webp" alt="Game M20">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/BFBE.webp" alt="Game M21">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/BMDE.webp" alt="Game M22">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/BMSEVZ.webp" alt="Game M23">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/BMTE.webp" alt="Game M24">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/BMZE.webp" alt="Game M25">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/BPHE.webp" alt="Game M26">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/BR7E.webp" alt="Game M27">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/NALE.webp" alt="Game M28">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/VAGE.webp" alt="Game M29">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/WAFE.webp" alt="Game M30">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/WBKE.webp" alt="Game M31">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/WEFE.webp" alt="Game M32">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/WHSE.webp" alt="Game M33">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/WMAE.webp" alt="Game M34">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/WMFE.webp" alt="Game M35">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/WMJE.webp" alt="Game M36">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/WMKE.webp" alt="Game M37">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/WMME.webp" alt="Game M38">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/WMPE.webp" alt="Game M39">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/WMRE.webp" alt="Game M40">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/WMSE.webp" alt="Game M41">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/WMWE.webp" alt="Game M42">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/WHYE.webp" alt="Game M43">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/M/WM2E.webp" alt="Game M44">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <!--<figure class="figure-item">
+                        <img src="img/Wii_u/M/" alt="Game M45">
+                        <figcaption class="special-caption">_GB</figcaption>
+                    </figure>-->
+
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-N">
+                        <div class="letter-header">N</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/N/AFDE01.webp" alt="Game N1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/N/AKLE.webp" alt="Game N2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/N/ALCE01.webp" alt="Game N3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/N/AN3E.webp" alt="Game N4">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/N/ANBE54.webp" alt="Game N5">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/N/ANGE01.webp" alt="Game N6">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/N/ANHE.webp" alt="Game N7">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/N/ANJE.webp" alt="Game N8">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/N/ANLE.webp" alt="Game N9">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/N/ANPE.webp" alt="Game N10">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/N/ANWE.webp" alt="Game N11">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/N/ARPE01.webp" alt="Game N12">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/N/ARSE01.webp" alt="Game N13">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/N/ATWE01.webp" alt="Game N14">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/N/BNAE.webp" alt="Game N15">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/N/WASE.webp" alt="Game N16">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/N/WF2E.webp" alt="Game N17">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/N/WHLE.webp" alt="Game N18">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/N/WMGE.webp" alt="Game N19">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <!--<figure class="figure-item">
+                        <img src="img/Wii_u/N/WMGE.webp" alt="Game N19">
+                        <figcaption class="special-caption">_GB</figcaption>
+                    </figure>-->
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-O">
+                        <div class="letter-header">O</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/O/AD5E.webp" alt="Game O1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/O/ALLE.webp" alt="Game O2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/O/AR7E.webp" alt="Game O3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/O/ARLE.webp" alt="Game O4">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <!--<figure class="figure-item">
+                        <img src="img/Wii_u/O/" alt="Game O5">
+                        <figcaption class="special-caption">_GB</figcaption>
+                    </figure>-->
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-P">
+                        <div class="letter-header">P</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/P/AC3E01.webp" alt="Game P1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/P/AFREVZ.webp" alt="Game P2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/P/APAE4Q.webp" alt="Game P3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/P/APCEAF.webp" alt="Game P4">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/P/APGEVZ.webp" alt="Game P5">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/P/APKE01.webp" alt="Game P6">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/P/APRE.webp" alt="Game P7">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/P/BP2E.webp" alt="Game P8">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/P/BP4E.webp" alt="Game P9">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/P/BPBE.webp" alt="Game P10">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/P/BPMEAF.webp" alt="Game P11">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/P/BPPE.webp" alt="Game P12">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/P/BPYE.webp" alt="Game P13">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/P/BPZE.webp" alt="Game P14">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/P/CNFE01.webp" alt="Game P15">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/P/VACE.webp" alt="Game P16">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/P/WACE.webp" alt="Game P17">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/P/WAPE.webp" alt="Game P18">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/P/WC9E.webp" alt="Game P19">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/P/WCNE.webp" alt="Game P20">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/P/WD9E.webp" alt="Game P21">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/P/WDLE.webp" alt="Game P22">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/P/WFPE.webp" alt="Game P23">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/P/WGAE.webp" alt="Game P24">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/P/WKEE.webp" alt="Game P25">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/P/WM3E.webp" alt="Game P26">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <!--<figure class="figure-item">
+                        <img src="img/Wii_u/P/" alt="Game P27">
+                        <figcaption class="special-caption">_GB</figcaption>
+                    </figure>-->
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-Q">
+                        <div class="letter-header">Q</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/Q/APFE5G.webp" alt="Game Q1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/Q/AQNE.webp" alt="Game Q2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/Q/AQPE.webp" alt="Game Q3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/Q/BQDE.webp" alt="Game Q4">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/Q/WDCE.webp" alt="Game Q5">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <!--<figure class="figure-item">
+                        <img src="img/Wii_u/Q/" alt="Game Q6">
+                        <figcaption class="special-caption">_GB</figcaption>
+                    </figure>-->
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-R">
+                        <div class="letter-header">R</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/R/ABFE52.webp" alt="Game R1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/R/ABHE08.webp" alt="Game R2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/R/AR6E.webp" alt="Game R3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/R/ARBE41.webp" alt="Game R4">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/R/ARFE.webp" alt="Game R5">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/R/ARGEG9.webp" alt="Game R6">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/R/ARHE.webp" alt="Game R7">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/R/ARME41.webp" alt="Game R8">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/R/ARNE.webp" alt="Game R9">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/R/ARXE.webp" alt="Game R10">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/R/ARZE.webp" alt="Game R11">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/R/BENE8X.webp" alt="Game R12">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/R/BGNE.webp" alt="Game R13">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/R/BRDENS.webp" alt="Game R14">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/R/BREE.webp" alt="Game R15">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/R/BRLE.webp" alt="Game R16">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/R/BRRE.webp" alt="Game R17">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/R/WAEE.webp" alt="Game R18">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/R/WBTE.webp" alt="Game R19">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/R/WC2E.webp" alt="Game R20">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/R/WCFE.webp" alt="Game R21">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/R/WCJE.webp" alt="Game R22">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <!--<figure class="figure-item">
+                        <img src="img/Wii_u/R/" alt="Game R23">
+                        <figcaption class="special-caption">_GB</figcaption>
+                    </figure>-->
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-S">
+                        <div class="letter-header">S</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/AD7E.webp" alt="Game S1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/ADCEWR.webp" alt="Game S2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/ADFE.webp" alt="Game S3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/ADGE.webp" alt="Game S4">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/ADME.webp" alt="Game S5">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/AENE.webp" alt="Game S6">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/AERE.webp" alt="Game S7">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/AFXE01.webp" alt="Game S8">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/AGME01.webp" alt="Game S9">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/AHFEWY.webp" alt="Game S10">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/ALGE.webp" alt="Game S11">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/AMAE01.webp" alt="Game S12">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/ANVE.webp" alt="Game S13">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/ARDE01.webp" alt="Game S14">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/ARRE.webp" alt="Game S15">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/AS2E8P.webp" alt="Game S16">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/AS3E.webp" alt="Game S17">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/AS5E52.webp" alt="Game S18">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/AS8EGT.webp" alt="Game S19">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/AS9E41.webp" alt="Game S20">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/ASCEWR.webp" alt="Game S21">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/ASDE.webp" alt="Game S22">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/ASFE52.webp" alt="Game S23">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/ASJE.webp" alt="Game S24">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/ASKE.webp" alt="Game S25">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/ASLE52.webp" alt="Game S26">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/ASNE8P.webp" alt="Game S27">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/ASWE01.webp" alt="Game S28">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/ATZE.webp" alt="Game S29">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/AWRE.webp" alt="Game S30">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/AXFE01.webp" alt="Game S31">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/AY5E.webp" alt="Game S32">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/BAXE.webp" alt="Game S33">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/BC9E.webp" alt="Game S34">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/BD6E.webp" alt="Game S35">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/BHKE.webp" alt="Game S36">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/BJTE.webp" alt="Game S37">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/BK7E52.webp" alt="Game S38">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/BL6E52.webp" alt="Game S39">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/BLGEWR.webp" alt="Game S40">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/BPEE52.webp" alt="Game S41">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/BPWE.webp" alt="Game S42">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/BRCE.webp" alt="Game S43">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/BS2E.webp" alt="Game S44">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/BS4E.webp" alt="Game S45">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/BS5E52.webp" alt="Game S46">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/BSAE.webp" alt="Game S47">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/BSEE.webp" alt="Game S48">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/BSGE.webp" alt="Game S49">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/BSHE.webp" alt="Game S50">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/BSJE.webp" alt="Game S51">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/BSNE.webp" alt="Game S52">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/BSPE.webp" alt="Game S53">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/BSSE8P.webp" alt="Game S54">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/BSVE.webp" alt="Game S55">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/BSXE.webp" alt="Game S56">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/BWFE01.webp" alt="Game S57">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/BY2E.webp" alt="Game S58">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/BZRE.webp" alt="Game S59">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/FB8E.webp" alt="Game S60">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/NABE.webp" alt="Game S61">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/VAAE.webp" alt="Game S62">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/WA2E.webp" alt="Game S63">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/WC5E.webp" alt="Game S64">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/WCGE.webp" alt="Game S65">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/WCTE.webp" alt="Game S66">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/WDFE.webp" alt="Game S67">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/WJCE.webp" alt="Game S69">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/WKNE.webp" alt="Game S70">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/WKSE.webp" alt="Game S71">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/WKTE.webp" alt="Game S72">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/WMNE.webp" alt="Game S74">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/WSSE.webp" alt="Game S75">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/S/WTBEEY.webp" alt="Game S76">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <!--<figure class="figure-item">
+                        <img src="img/Wii_u/S/" alt="Game S77">
+                        <figcaption class="special-caption">_GB</figcaption>
+                    </figure>-->
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-T">
+                        <div class="letter-header">T</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/AA3E.webp" alt="Game T1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/ABCE.webp" alt="Game T2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/ACME01.webp" alt="Game T3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/ACREG9.webp" alt="Game T4">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/AJHE.webp" alt="Game T5">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/AK4E.webp" alt="Game T6">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/AKNEAF.webp" alt="Game T7">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/ALZE01.webp" alt="Game T8">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/AM9E52.webp" alt="Game T9">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/AMZE52.webp" alt="Game T10">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/ASEE01.webp" alt="Game T11">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/ASUE41.webp" alt="Game T12">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/AT7E.webp" alt="Game T13">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/AT7E6D.webp" alt="Game T14">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/ATBEG9.webp" alt="Game T15">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/ATCE.webp" alt="Game T17">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/ATKEAF.webp" alt="Game T18">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/ATPE.webp" alt="Game T19">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/ATRE52.webp" alt="Game T20">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/ATTE.webp" alt="Game T21">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/ATVE.webp" alt="Game T22">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/AVCE52.webp" alt="Game T23">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/AVGE.webp" alt="Game T24">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/AWDE52.webp" alt="Game T25">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/AXZE.webp" alt="Game T26">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/AYEE52.webp" alt="Game T27">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/AZAE01.webp" alt="Game T29">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/BCZE01.webp" alt="Game T30">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/BRXE.webp" alt="Game T32">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/BS7E.webp" alt="Game T33">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/BT2E.webp" alt="Game T34">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/BTAE.webp" alt="Game T35">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/BTCE.webp" alt="Game T36">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/BTEE.webp" alt="Game T37">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/BTFE.webp" alt="Game T38">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/BTGE.webp" alt="Game T39">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/BTNE.webp" alt="Game T40">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/BTQE.webp" alt="Game T41">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/BTSE.webp" alt="Game T42">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/BTTE.webp" alt="Game T43">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/BTWE.webp" alt="Game T44">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/BTXEGT.webp" alt="Game T45">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/BTYE.webp" alt="Game T47">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/PAKE.webp" alt="Game T48">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/VA6E.webp" alt="Game T49">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/WAAE.webp" alt="Game T50">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/WAYE.webp" alt="Game T51">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/WBDE.webp" alt="Game T52">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/WC3E.webp" alt="Game T53">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/WCVE.webp" alt="Game T54">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/WG3E.webp" alt="Game T55">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/WGDE.webp" alt="Game T56">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/WK8E.webp" alt="Game T57">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/WKRE.webp" alt="Game T58">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/T/WTRE.webp" alt="Game T59">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <!--<figure class="figure-item">
+                        <img src="img/Wii_u/T/WTRE.webp" alt="Game T60">
+                        <figcaption class="special-caption">_GB</figcaption>
+                    </figure>-->
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-U">
+                        <div class="letter-header">U</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/U/AUHE.webp" alt="Game U1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/U/AUTE.webp" alt="Game U2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/U/AUWE.webp" alt="Game U3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/U/BUGE.webp" alt="Game U4">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/U/BUTE6V.webp" alt="Game U5">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/U/WEPE.webp" alt="Game U6">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <!--<figure class="figure-item">
+                        <img src="img/Wii_u/U/" alt="Game U7">
+                        <figcaption class="special-caption">_GB</figcaption>
+                    </figure>-->
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-V">
+                        <div class="letter-header">V</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/V/AVME.webp" alt="Game V1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/V/AVWE.webp" alt="Game V2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/V/WVFE.webp" alt="Game V3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <!--<figure class="figure-item">
+                        <img src="img/Wii_u/V/" alt="Game V4">
+                        <figcaption class="special-caption">_GB</figcaption>
+                    </figure>-->
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-W">
+                        <div class="letter-header">W</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/W/AHBEC8.webp" alt="Game W1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/W/AN2E.webp" alt="Game W2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/W/ANXE01.webp" alt="Game W3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/W/ASTE01.webp" alt="Game W4">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/W/AW2E.webp" alt="Game W5">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/W/AW3E52.webp" alt="Game W6">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/W/AW4E52.webp" alt="Game W7">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/W/AWBE.webp" alt="Game W8">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/W/AWCE41.webp" alt="Game W9">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/W/AWEE.webp" alt="Game W10">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/W/AWFE78.webp" alt="Game W11">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/W/AWME.webp" alt="Game W12">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/W/AWPE.webp" alt="Game W13">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/W/AWSE.webp" alt="Game W14">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/W/AWWE.webp" alt="Game W15">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/W/WDSE.webp" alt="Game W16">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/W/WHXE.webp" alt="Game W17">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <!--<figure class="figure-item">
+                        <img src="img/Wii_u/W/" alt="Game W18">
+                        <figcaption class="special-caption">_GB</figcaption>
+                    </figure>-->
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-X">
+                        <div class="letter-header">X</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/X/AX5E01.webp" alt="Game X1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/X/AXAE.webp" alt="Game X2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/X/AXJE.webp" alt="Game X3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/X/WEXE.webp" alt="Game X4">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <!--<figure class="figure-item">
+                        <img src="img/Wii_u/X/" alt="Game X5">
+                        <figcaption class="special-caption">_GB</figcaption>
+                    </figure>-->
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-Y">
+                        <div class="letter-header">Y</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/Y/APNE.webp" alt="Game Y1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/Y/AYCE01.webp" alt="Game Y2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/Y/AYSE41.webp" alt="Game Y3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <!--<figure class="figure-item">
+                        <img src="img/Wii_u/Y/" alt="Game Y4">
+                        <figcaption class="special-caption">_GB</figcaption>
+                    </figure>-->
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-Z">
+                        <div class="letter-header">Z</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/Z/AZBE5G.webp" alt="Game Z1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/Z/AZDE.webp" alt="Game Z2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/Z/AZGE.webp" alt="Game Z3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/Z/AZUE41.webp" alt="Game Z4">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/Z/WBAE.webp" alt="Game Z5">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                            <figure class="figure-item">
+                                <img src="img/Wii_u/Z/WLSE.webp" alt="Game Z6">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <!--<figure class="figure-item">
+                        <img src="img/Wii_u/Z/" alt="Game Z7">
+                        <figcaption class="special-caption">Game Z6</figcaption>
+                    </figure>-->
+                        </div>
+                    </div>
+
+                    <button class="volver-btn" onclick="window.location.href='index.html'">❌</button>
+
+                    <button class="inicio-btn" onclick="window.scrollTo(0, 0);">☝</button>
+
+                    <script>
+                        let totalGB = 0;
+                        const figures = document.querySelectorAll('.figure-item');
+                        const totalSuma = document.getElementById('total-suma');
+                        const mostrarSelecciones = document.getElementById('mostrar-selecciones');
+                        const cuadroSelecciones = document.getElementById('cuadro-selecciones');
+                        const listaSelecciones = document.getElementById('lista-selecciones');
+                        const totalSeleccionado = document.getElementById('total-seleccionado');
+                        const cerrarCuadro = document.getElementById('cerrar-cuadro');
+
+                        function updateTotal() {
+                            totalSuma.textContent = `Total: ${totalGB.toFixed(2)} GB`;
+                            totalSeleccionado.textContent = totalGB.toFixed(2);
+                        }
+
+                        figures.forEach((figure) => {
+                            figure.addEventListener('click', function () {
+                                const captionText = this.querySelector('.special-caption').textContent;
+                                let valueGB = 0;
+                                if (captionText.includes('_GB')) {
+                                    valueGB = parseFloat(captionText.replace('_GB', ''));
+                                } else if (captionText.includes('_MB')) {
+                                    valueGB = parseFloat(captionText.replace('_MB', '')) / 1024;
+                                }
+
+                                if (this.classList.contains('selected')) {
+                                    this.classList.remove('selected');
+                                    totalGB -= valueGB;
+                                } else {
+                                    this.classList.add('selected');
+                                    totalGB += valueGB;
+                                }
+
+                                updateTotal();
+                            });
+                        });
+
+                        mostrarSelecciones.addEventListener('click', () => {
+                            listaSelecciones.innerHTML = '';
+                            const selectedFigures = document.querySelectorAll('.figure-item.selected');
+                            selectedFigures.forEach((figure) => {
+                                const captionText = figure.querySelector('.special-caption').textContent;
+                                const imageSrc = figure.querySelector('img').src;
+
+                                const itemDiv = document.createElement('div');
+                                itemDiv.classList.add('item');
+
+                                const imgElement = document.createElement('img');
+                                imgElement.src = imageSrc;
+
+                                const captionElement = document.createElement('span');
+                                captionElement.textContent = captionText;
+
+                                const closeButton = document.createElement('button');
+                                closeButton.textContent = 'X';
+                                closeButton.classList.add('remove-btn');
+                                closeButton.addEventListener('click', () => {
+                                    if (confirm(`¿Deseas eliminar ${captionText}?`)) {
+                                        figure.classList.remove('selected');
+                                        let valueGB = 0;
+                                        if (captionText.includes('_GB')) {
+                                            valueGB = parseFloat(captionText.replace('_GB', ''));
+                                        } else if (captionText.includes('_MB')) {
+                                            valueGB = parseFloat(captionText.replace('_MB', '')) / 1024;
+                                        }
+                                        totalGB -= valueGB;
+                                        updateTotal();
+                                        itemDiv.remove();
+                                    }
+                                });
+
+                                itemDiv.appendChild(imgElement);
+                                itemDiv.appendChild(captionElement);
+                                itemDiv.appendChild(closeButton);
+
+                                listaSelecciones.appendChild(itemDiv);
+                            });
+
+                            updateTotal();
+                            cuadroSelecciones.style.display = 'block';
+                        });
+
+                        cerrarCuadro.addEventListener('click', () => {
+                            cuadroSelecciones.style.display = 'none';
+                        });
+                    </script>
+
+                    <script>
+                        const cuadro = document.getElementById('cuadro-selecciones');
+                        let isDragging = false;
+                        let offsetX = 0, offsetY = 0;
+
+                        // Asegurar que el cuadro tenga `position: absolute`
+                        cuadro.style.position = "block";
+
+                        // Evitar el desplazamiento de la página al mover el cuadro en móviles
+                        function disableScroll(e) {
+                            e.preventDefault();
+                        }
+
+                        // Evento para empezar a arrastrar con el mouse
+                        cuadro.addEventListener('mousedown', (e) => {
+                            isDragging = true;
+                            offsetX = e.clientX - cuadro.offsetLeft;
+                            offsetY = e.clientY - cuadro.offsetTop;
+                            cuadro.style.cursor = "grabbing";
+                        });
+
+                        // Evento para mover el cuadro con el mouse
+                        document.addEventListener('mousemove', (e) => {
+                            if (isDragging) {
+                                cuadro.style.left = `${e.clientX - offsetX}px`;
+                                cuadro.style.top = `${e.clientY - offsetY}px`;
+                            }
+                        });
+
+                        // Evento para soltar el cuadro con el mouse
+                        document.addEventListener('mouseup', () => {
+                            isDragging = false;
+                            cuadro.style.cursor = "grab";
+                        });
+
+                        // Evento para empezar a arrastrar con el tacto (evita scroll)
+                        cuadro.addEventListener('touchstart', (e) => {
+                            const touch = e.touches[0];
+                            isDragging = true;
+                            offsetX = touch.clientX - cuadro.offsetLeft;
+                            offsetY = touch.clientY - cuadro.offsetTop;
+                            cuadro.style.cursor = "grabbing";
+
+                            // Evitar que la página se desplace
+                            document.body.addEventListener('touchmove', disableScroll, { passive: false });
+                        });
+
+                        // Evento para mover el cuadro con el tacto
+                        document.addEventListener('touchmove', (e) => {
+                            if (isDragging) {
+                                const touch = e.touches[0];
+                                cuadro.style.left = `${touch.clientX - offsetX}px`;
+                                cuadro.style.top = `${touch.clientY - offsetY}px`;
+                            }
+                        });
+
+                        // Evento para soltar el cuadro con el tacto (reactivar scroll)
+                        document.addEventListener('touchend', () => {
+                            isDragging = false;
+                            cuadro.style.cursor = "grab";
+
+                            // Permitir que la página se desplace nuevamente
+                            document.body.removeEventListener('touchmove', disableScroll);
+                        });
+
+                    </script>
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", () => {
+                            const links = document.querySelectorAll(".abecedario a");
+                            const sections = document.querySelectorAll(".game-section");
+
+                            // 🔹 Mostrar solo la sección (#) al inicio
+                            sections.forEach(section => {
+                                section.style.display = section.id === "section-(#)" ? "block" : "none";
+                            });
+
+                            links.forEach(link => {
+                                link.addEventListener("click", e => {
+                                    e.preventDefault();
+                                    const targetId = link.getAttribute("href").substring(1);
+                                    const target = document.getElementById(targetId);
+
+                                    if (!target) return;
+
+                                    // 🔹 Evitar que (#) desaparezca al hacer clic otra vez
+                                    if (targetId === "section-(#)") {
+                                        sections.forEach(section => {
+                                            section.style.display = section.id === "section-(#)" ? "block" : "none";
+                                        });
+                                        return;
+                                    }
+
+                                    // Ocultar todas las secciones
+                                    sections.forEach(section => section.style.display = "none");
+
+                                    // Mostrar la sección seleccionada y sus padres
+                                    let current = target;
+                                    while (current && current.classList.contains("game-section")) {
+                                        current.style.display = "block";
+                                        current = current.parentElement.closest(".game-section");
+                                    }
+
+                                    // Desplazamiento suave hacia la sección elegida
+                                    target.scrollIntoView({ behavior: "smooth" });
+                                });
+                            });
+                        });
+                    </script>
+
+
+
+
+
+
+
+
+
+</body>
+
+
+
+</html>
