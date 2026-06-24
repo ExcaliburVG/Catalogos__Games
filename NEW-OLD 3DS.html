@@ -1,0 +1,2772 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1024">
+    <meta name="google" content="notranslate">
+    <title>NEW-OLD 3DS</title>
+    <link rel="stylesheet" href="Estilos_games.css">
+</head>
+
+<style>
+    body {
+        background-image: url('img/3ds/3DSF.png');
+        background-position: center;
+        color: #000000;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Estilo para el borde Rojo + Plateado */
+    @keyframes glow {
+        0% {
+            box-shadow:
+                0 0 10px #d9d9d9,
+                0 0 20px #d9d9d9,
+                0 0 30px #b30000,
+                0 0 40px #b30000;
+        }
+
+        50% {
+            box-shadow:
+                0 0 20px #ffffff,
+                0 0 30px #c0c0c0,
+                0 0 40px #ff0000,
+                0 0 50px #ff0000;
+        }
+
+        100% {
+            box-shadow:
+                0 0 10px #d9d9d9,
+                0 0 20px #d9d9d9,
+                0 0 30px #b30000,
+                0 0 40px #b30000;
+        }
+    }
+
+    .selected {
+        border: 18px solid #c0c0c0;
+
+        border-image:
+            linear-gradient(to bottom,
+                #8c8c8c,
+                #f5f5f5,
+                #c0c0c0,
+                #ff1a1a,
+                #800000) 1;
+
+        animation: glow 1.5s infinite alternate;
+    }
+
+    /* Posicionamiento del cuadro de suma */
+    #total-suma {
+        position: fixed;
+        top: 8px;
+        right: 10px;
+        background-color: white;
+        border: 8px solid #c0c0c0;
+        padding: 20px;
+        font-size: 2.3em;
+        font-weight: bold;
+
+        box-shadow:
+            0 0 10px #d9d9d9,
+            0 0 20px #b30000;
+    }
+
+    #mostrar-selecciones {
+        position: fixed;
+        top: 5px;
+        left: 5px;
+
+        background:
+            linear-gradient(135deg,
+                #8c8c8c,
+                #f5f5f5,
+                #cc0000);
+
+        color: #000000;
+
+        border: 2px solid #800000;
+
+        padding: 35px 35px;
+        font-size: 2em;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 10px;
+
+        text-shadow:
+            1px 1px 0px rgba(255, 255, 255, 0.6);
+
+        box-shadow:
+            0 0 10px #d9d9d9,
+            0 0 20px #b30000;
+    }
+
+    #mostrar-selecciones:hover {
+        background:
+            linear-gradient(135deg,
+                #ffffff,
+                #d9d9d9,
+                #ff0000);
+    }
+
+    #cuadro-selecciones {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        max-width: 800px;
+
+        background-color: white;
+
+        border: 5px solid #c0c0c0;
+
+        box-shadow:
+            0 0 20px rgba(217, 217, 217, 0.7),
+            0 0 40px rgba(179, 0, 0, 0.6);
+
+        padding: 20px;
+        display: none;
+        z-index: 1000;
+        cursor: default;
+    }
+
+    #contenedor-imagenes {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        overflow-x: auto;
+        padding: 110px;
+    }
+
+    #contenedor-imagenes img {
+        max-width: 150px;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #cuadro-selecciones h2 {
+        text-align: center;
+        color: rgb(0, 0, 0);
+        margin-bottom: 10px;
+    }
+
+    /* Mostrar 2 por fila */
+    #cuadro-selecciones .item {
+        width: 48%;
+        display: inline-block;
+        vertical-align: top;
+        text-align: center;
+        margin: 1%;
+
+        border: 2px solid #c0c0c0;
+
+        border-radius: 10px;
+        padding: 10px;
+        box-sizing: border-box;
+
+        box-shadow:
+            0 0 10px rgba(217, 217, 217, 0.6);
+    }
+
+    /* Imagen rellena el espacio completamente */
+    #cuadro-selecciones .item img {
+        width: 100%;
+        height: 370px;
+        object-fit: fill;
+        border-radius: 5px;
+    }
+
+    /* Botones */
+    #cuadro-selecciones button {
+
+        background:
+            linear-gradient(to bottom,
+                #f5f5f5,
+                #c0c0c0,
+                #cc0000);
+
+        color: rgb(0, 0, 0);
+
+        border: 1px solid #800000;
+
+        padding: 33px 30px;
+        font-size: 1.6em;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 10px;
+
+        box-shadow:
+            0 0 10px #d9d9d9,
+            0 0 20px #b30000;
+    }
+
+    #cuadro-selecciones button:hover {
+        background: #000000;
+        color: #ffffff;
+    }
+
+    #cerrar-cuadro:hover {
+        background-color: darkred;
+    }
+
+    .abecedario {
+        text-align: center;
+        margin: 120px 0;
+        background-color: black;
+        /* fondo negro */
+        padding: 20px;
+    }
+
+    .abecedario a {
+        color: rgb(255, 255, 255);
+        /* naranja */
+        margin: 0 10px;
+        text-decoration: none;
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    /* opcional: efecto al pasar el mouse */
+    .abecedario a:hover {
+        color: rgb(255, 0, 0);
+    }
+
+    /* Estilo para impresión */
+    @media print {
+
+        body * {
+            display: none;
+        }
+
+        #cuadro-selecciones,
+        #cuadro-selecciones * {
+            display: block;
+        }
+
+        #cuadro-selecciones {
+            position: static !important;
+            transform: none !important;
+            border: none !important;
+            box-shadow: none !important;
+            width: 100% !important;
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        .special-caption {
+            font-size: 12px;
+        }
+    }
+</style>
+
+<body>
+    <div class="abecedario">
+        <a href="#section-(#)">(#)</a>
+        <a href="#section-A">A</a>
+        <a href="#section-B">B</a>
+        <a href="#section-C">C</a>
+        <a href="#section-D">D</a>
+        <a href="#section-E">E</a>
+        <a href="#section-F">F</a>
+        <a href="#section-G">G</a>
+        <a href="#section-H">H</a>
+        <a href="#section-I">I</a>
+        <a href="#section-J">J</a>
+        <a href="#section-K">K</a>
+        <a href="#section-L">L</a>
+        <a href="#section-M">M</a>
+        <a href="#section-N">N</a>
+        <a href="#section-O">O</a>
+        <a href="#section-P">P</a>
+        <a href="#section-Q">Q</a>
+        <a href="#section-R">R</a>
+        <a href="#section-S">S</a>
+        <a href="#section-T">T</a>
+        <a href="#section-U">U</a>
+        <a href="#section-V">V</a>
+        <a href="#section-W">W</a>
+        <a href="#section-X">X</a>
+        <a href="#section-Y">Y</a>
+        <a href="#section-Z">Z</a>
+    </div>
+
+
+    <div id="total-suma">Total: 0 GB</div>
+    <div id="caption-info" class="caption-info"></div>
+    <button id="mostrar-selecciones">IMPRIMIR🕹️</button>
+
+    <div id="cuadro-selecciones">
+        <button id="cerrar-cuadro">Minimizar</button>
+        <h2>Total Selecciones: <span id="total-seleccionado"></span> GB</h2>
+        <div id="lista-selecciones"></div>
+        <!--<button onclick="window.print()">Imprimir [PDF]</button>-->
+    </div>
+
+    <div class="game-section" id="section-(#)">
+        <div class="letter-header" style="color: #ffffff; background: #000000; padding: 15px; border-radius: 10px;">
+            SELECCIONE JUEGOS CON UN CLIC EL JUEGO Y LUEGO TOQUE IMPRIMIR🕹️ (LA CAPTURA DE PANTALLA)
+        </div>
+
+        <div class="games">
+
+            <div class="game-section" id="section-(#)">
+                <div class="letter-header"
+                    style="color: #ffffff; background: #000000; padding: 15px; border-radius: 10px;">
+                    ELIJA LOS JUEGOS DEPENDIENDO LA CAPACIDAD DE LA MICRO SD JUEGOS PESO APROXIMADO DE 500_MB O 1_GB A
+                    4GB
+                </div>
+
+                <div class="games">
+
+                    <div class="game-section" id="section-(#)">
+                        <div class="letter-header">(#)</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/3ds/AC5E.jpg" alt="Game 1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-A">
+                        <div class="letter-header">A</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/3ds/A/AACE.jpg" alt="Game 1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/A/AC3E.jpg" alt="Game 2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/A/AD4E.jpg" alt="Game 3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/A/AL4E.jpg" alt="Game 4">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/A/AL6E.jpg" alt="Game 5">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/A/AM2E.jpg" alt="Game 6">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/A/AMME.jpg" alt="Game 7">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/A/ANDE.jpg" alt="Game 8">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/A/ANGE.jpg" alt="Game 9">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/A/ASFE.jpg" alt="Game 10">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/A/AUTE.jpg" alt="Game 11">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/A/AVTE.jpg" alt="Game 12">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/A/AWEE.jpg" alt="Game 13">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/A/AXTE.jpg" alt="Game 14">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/A/AY9E.jpg" alt="Game 15">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/A/BAQE.jpg" alt="Game 16">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/A/BCRE.jpg" alt="Game 17">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/A/BFNE.jpg" alt="Game 18">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/A/BWDE.jpg" alt="Game 19">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/A/EGDE.jpg" alt="Game 20">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-B">
+                        <div class="letter-header">B</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/3ds/B/AAVE.jpg" alt="Game 1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/B/AB5E.jpg" alt="Game 2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/B/ABBE.jpg" alt="Game 3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/B/ABLZ.jpg" alt="Game 4">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/B/ABNE.jpg" alt="Game 5">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/B/ABSE.jpg" alt="Game 6">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/B/ABTE.jpg" alt="Game 7">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/B/ABVE.jpg" alt="Game 8">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/B/ABWE.jpg" alt="Game 9">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/B/ABYE.jpg" alt="Game 10">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/B/ABZE.jpg" alt="Game 11">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/B/AEQE.jpg" alt="Game 12">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/B/ARXE.jpg" alt="Game 13">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/B/AZEE.jpg" alt="Game 14">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/B/BH6E.jpg" alt="Game 15">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/B/BRQE.jpg" alt="Game 16">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/B/BRWE.jpg" alt="Game 17">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/B/BSEE.jpg" alt="Game 18">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/B/BTRE.jpg" alt="Game 19">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/B/BYAE.jpg" alt="Game 20">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/B/BYBE.jpg" alt="Game 21">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-C">
+                        <div class="letter-header">C</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/3ds/C/A49E.jpg" alt="Game 1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/C/A5LE.jpg" alt="Game 2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/C/A66E.jpg" alt="Game 3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/C/AAZE.jpg" alt="Game 4">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/C/AC2E.jpg" alt="Game 5">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/C/AC7E.jpg" alt="Game 6">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/C/ACAE.jpg" alt="Game 7">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/C/ACFE.jpg" alt="Game 8">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/C/ACGE.jpg" alt="Game 9">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/C/ACPE.jpg" alt="Game 10">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/C/ACQE.jpg" alt="Game 11">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/C/ACRE.jpg" alt="Game 12">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/C/ACVE.jpg" alt="Game 13">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/C/AD5E.jpg" alt="Game 14">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/C/AJEE.jpg" alt="Game 15">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/C/AQ8E.jpg" alt="Game 16">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/C/AQNE.jpg" alt="Game 17">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/C/ATTE.jpg" alt="Game 18">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/C/AW2E.jpg" alt="Game 19">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/C/AY3E.jpg" alt="Game 20">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/C/AY6A.jpg" alt="Game 21">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/C/BC5E.jpg" alt="Game 22">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/C/BCCE.jpg" alt="Game 23">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/C/BCPE.jpg" alt="Game 24">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/C/BR3E.jpg" alt="Game 25">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/C/BS8E.jpg" alt="Game 26">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/C/BXLE.jpg" alt="Game 27">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/C/BZPE.jpg" alt="Game 28">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-D">
+                        <div class="letter-header">D</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/3ds/D/A98A.jpg" alt="Game 1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/D/AD2E.jpg" alt="Game 2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/D/AD7E.jpg" alt="Game 3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/D/ADDE.jpg" alt="Game 4">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/D/ADEE.jpg" alt="Game 5">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/D/ADLE.jpg" alt="Game 6">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/D/ADPE.jpg" alt="Game 7">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/D/ADRE.jpg" alt="Game 8">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/D/ADTE.jpg" alt="Game 9">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/D/ADXE.jpg" alt="Game 10">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/D/AEGE.jpg" alt="Game 11">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/D/AHQE.jpg" alt="Game 12">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/D/AMTE.jpg" alt="Game 13">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/D/APPE.jpg" alt="Game 14">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/D/AYTE.jpg" alt="Game 15">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/D/BD7E.jpg" alt="Game 16">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/D/BDKE.jpg" alt="Game 17">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/D/BDLE.jpg" alt="Game 18">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/D/BDVE.jpg" alt="Game 19">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/D/BQ8E.jpg" alt="Game 20">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/D/BTDE.jpg" alt="Game 21">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-E">
+                        <div class="letter-header">E</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/3ds/E/AECE.jpg" alt="Game 1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/E/BAGE.jpg" alt="Game 2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/E/BFDE.jpg" alt="Game 3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/E/BMZE.jpg" alt="Game 4">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/E/BZME.jpg" alt="Game 5">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-F">
+                        <div class="letter-header">F</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/3ds/F/A4AE.jpg" alt="Game 1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/F/A8FE.jpg" alt="Game 2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/F/AEHE.jpg" alt="Game 3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/F/AF2E.jpg" alt="Game 4">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/F/AF4E.jpg" alt="Game 5">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/F/AF8E.jpg" alt="Game 6">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/F/AFCE.jpg" alt="Game 7">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/F/AFEE.jpg" alt="Game 8">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/F/AFHE.jpg" alt="Game 9">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/F/AFLE.jpg" alt="Game 10">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/F/AFME.jpg" alt="Game 11">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/F/AFRE.jpg" alt="Game 12">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/F/AFYE.jpg" alt="Game 13">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/F/AHRE.jpg" alt="Game 14">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/F/AJJE.jpg" alt="Game 15">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/F/ARHE.jpg" alt="Game 16">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/F/ATQE.jpg" alt="Game 17">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/F/BCEE.jpg" alt="Game 18">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/F/BFSE.jpg" alt="Game 19">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/F/BFTE.jpg" alt="Game 20">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/F/BFXE.jpg" alt="Game 21">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/F/BFYE.jpg" alt="Game 22">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/F/BFZE.jpg" alt="Game 23">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/F/BM9E.jpg" alt="Game 24">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/F/BSKE.jpg" alt="Game 25">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/F/CFME.jpg" alt="Game 26">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/F/ECDE.jpg" alt="Game 27">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-G">
+                        <div class="letter-header">G</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/3ds/G/AG3E.jpg" alt="Game 1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/G/AGFE.jpg" alt="Game 2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/G/AGLE.jpg" alt="Game 3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/G/AGPE.jpg" alt="Game 4">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/G/AGRE.jpg" alt="Game 5">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/G/AGSE.jpg" alt="Game 6">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/G/AGXE.jpg" alt="Game 7">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/G/ANLE.jpg" alt="Game 8">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/G/BBME.jpg" alt="Game 9">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/G/BG8E.jpg" alt="Game 10">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/G/BGME.jpg" alt="Game 11">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-H">
+                        <div class="letter-header">H</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/3ds/H/ABQE.jpg" alt="Game 1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/H/AEAE.jpg" alt="Game 2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/H/AH6E.jpg" alt="Game 3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/H/AH8E.jpg" alt="Game 4">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/H/AH9E.jpg" alt="Game 5">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/H/AHCE.jpg" alt="Game 6">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/H/AHFE.jpg" alt="Game 7">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/H/AHKE.jpg" alt="Game 8">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/H/AHLE.jpg" alt="Game 9">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/H/AHSE.jpg" alt="Game 10">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/H/AHVE.jpg" alt="Game 11">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/H/AHXE.jpg" alt="Game 12">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/H/AT2E.jpg" alt="Game 13">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/H/AVAE.jpg" alt="Game 14">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/H/AVME.jpg" alt="Game 15">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/H/BKYE.jpg" alt="Game 16">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/H/BZHE.jpg" alt="Game 17">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-I">
+                        <div class="letter-header">I</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/3ds/I/ABAE.jpg" alt="Game 1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/I/ADYE.jpg" alt="Game 2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/I/AF3E.jpg" alt="Game 3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/I/AGUE.jpg" alt="Game 4">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/I/AQLE.jpg" alt="Game 5">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-J">
+                        <div class="letter-header">J</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/3ds/J/AJCE.jpg" alt="Game 1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/J/AJWE.jpg" alt="Game 2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/J/BG9E.jpg" alt="Game 3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-K">
+                        <div class="letter-header">K</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/3ds/K/AJ8E.jpg" alt="Game 1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/K/AKDE.jpg" alt="Game 2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/K/AKHE.jpg" alt="Game 3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/K/AT3A.jpg" alt="Game 4">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/K/BALE.jpg" alt="Game 5">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/K/BE4E.jpg" alt="Game 6">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/K/BKFE.jpg" alt="Game 7">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-L">
+                        <div class="letter-header">L</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/3ds/L/AA8E.jpg" alt="Game 1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/L/ADNE.jpg" alt="Game 2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/L/AFJE.jpg" alt="Game 3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/L/AGGE.jpg" alt="Game 4">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/L/AHPE.jpg" alt="Game 5">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/L/AL5Y.jpg" alt="Game 6">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/L/ALAE.jpg" alt="Game 7">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/L/ALBE.jpg" alt="Game 8">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/L/ALDE.jpg" alt="Game 9">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/L/ALEE.jpg" alt="Game 10">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/L/ALGE.jpg" alt="Game 11">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/L/ALYE.jpg" alt="Game 12">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/L/APCE.jpg" alt="Game 13">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/L/APRE.jpg" alt="Game 14">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/L/AZJE.jpg" alt="Game 15">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/L/BDTE.jpg" alt="Game 16">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/L/BGNE.jpg" alt="Game 17">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/L/BKKE.jpg" alt="Game 18">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/L/BLFE.jpg" alt="Game 19">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/L/BLHE.jpg" alt="Game 20">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/L/BLJE.jpg" alt="Game 21">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/L/BLNE.jpg" alt="Game 22">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/L/BLSE.jpg" alt="Game 23">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/L/BLWE.jpg" alt="Game 24">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/L/BRGE.jpg" alt="Game 25">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/L/BTME.jpg" alt="Game 26">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-M">
+                        <div class="letter-header">M</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/A3RE.jpg" alt="Game 1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/A9AE.jpg" alt="Game 2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/AA9E.jpg" alt="Game 3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/AAHE.jpg" alt="Game 4">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/ACME.jpg" alt="Game 5">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/ADQE.jpg" alt="Game 6">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/AEFE.jpg" alt="Game 7">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/AGAE.jpg" alt="Game 8">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/AH5E.jpg" alt="Game 9">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/AJ3E.jpg" alt="Game 10">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/AKKE.jpg" alt="Game 11">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/AM4E.jpg" alt="Game 12">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/AM7E.jpg" alt="Game 13">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/AMCE.jpg" alt="Game 14">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/AMDE.jpg" alt="Game 15">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/AMGE.jpg" alt="Game 16">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/AMHE.jpg" alt="Game 17">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/AMJE.jpg" alt="Game 18">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/AMKE.jpg" alt="Game 19">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/AMQE.jpg" alt="Game 20">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/AMSE.jpg" alt="Game 21">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/AMYE.jpg" alt="Game 22">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/AMZE.jpg" alt="Game 23">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/ASHE.jpg" alt="Game 24">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/ATSE.jpg" alt="Game 25">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/AUNE.jpg" alt="Game 26">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/AYME.jpg" alt="Game 27">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/AYNE.jpg" alt="Game 28">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/BAAE.jpg" alt="Game 29">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/BCAE.jpg" alt="Game 30">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/BD2E.jpg" alt="Game 31">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/BD3E.jpg" alt="Game 32">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/BFGE.jpg" alt="Game 33">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/BGXE.jpg" alt="Game 34">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/BHRE.jpg" alt="Game 35">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/BM5E.jpg" alt="Game 36">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/BMME.jpg" alt="Game 37">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/BMSE.jpg" alt="Game 38">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/BRME.jpg" alt="Game 39">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/M/BXXE.jpg" alt="Game 40">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-N">
+                        <div class="letter-header">N</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/3ds/N/ABEE.jpg" alt="Game 1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/N/AC9E.jpg" alt="Game 2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/N/ADAE.jpg" alt="Game 3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/N/ADBE.jpg" alt="Game 4">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/N/ADCE.jpg" alt="Game 5">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/N/ADME.jpg" alt="Game 6">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/N/AF7E.jpg" alt="Game 7">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/N/AN3E.jpg" alt="Game 8">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/N/AN4E.jpg" alt="Game 9">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/N/ANCE.jpg" alt="Game 10">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/N/ANKE.jpg" alt="Game 11">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/N/ANSE.jpg" alt="Game 12">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/N/ATAE.jpg" alt="Game 13">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-O">
+                        <div class="letter-header">O</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/3ds/O/BRDZ.jpg" alt="Game 1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/O/BUWE.jpg" alt="Game 2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-P">
+                        <div class="letter-header">P</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/A2AA.jpg" alt="Game 1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/A2BA.jpg" alt="Game 2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/AAWE.jpg" alt="Game 3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/ACCE.jpg" alt="Game 4">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/ACNE.jpg" alt="Game 5">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/ACTE.jpg" alt="Game 6">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/AE2E.jpg" alt="Game 7">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/AEEE.jpg" alt="Game 8">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/AEJE.jpg" alt="Game 9">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/AG5E.jpg" alt="Game 10">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/AP6E.jpg" alt="Game 11">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/AP8E.jpg" alt="Game 12">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/AP9E.jpg" alt="Game 13">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/APBE.jpg" alt="Game 14">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/APDE.jpg" alt="Game 15">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/APFE.jpg" alt="Game 16">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/APGE.jpg" alt="Game 17">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/APIE.jpg" alt="Game 18">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/APNE.jpg" alt="Game 19">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/APOE.jpg" alt="Game 20">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/APUE.jpg" alt="Game 21">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/APWE.jpg" alt="Game 22">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/APZE.jpg" alt="Game 23">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/AQ2E.jpg" alt="Game 24">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/AQQE.jpg" alt="Game 25">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/AVSE.jpg" alt="Game 26">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/AWAE.jpg" alt="Game 27">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/AWTE.jpg" alt="Game 28">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/AXXE.jpg" alt="Game 29">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/AYZE.jpg" alt="Game 30">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/AZBE.jpg" alt="Game 31">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/AZGE.jpg" alt="Game 32">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/AZLE.jpg" alt="Game 33">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/BNDA.jpg" alt="Game 34">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/BNEE.jpg" alt="Game 35">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/BPCE.jpg" alt="Game 36">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/BPFE.jpg" alt="Game 37">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/BPGE.jpg" alt="Game 38">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/BPLE.jpg" alt="Game 39">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/BPME.jpg" alt="Game 40">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/BPPE.jpg" alt="Game 41">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/BPRE.jpg" alt="Game 42">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/BPXE.jpg" alt="Game 43">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/BRCE.jpg" alt="Game 44">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/BSSE.jpg" alt="Game 45">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/BX2E.jpg" alt="Game 46">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/ECFE.jpg" alt="Game 47">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/ECLE.jpg" alt="Game 48">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/ECRP.jpg" alt="Game 49">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/EK2E.jpg" alt="Game 50">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/P/EKJe.jpg" alt="Game 51">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-R">
+                        <div class="letter-header">R</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/3ds/R/ABME.jpg" alt="Game 1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/R/ABRE.jpg" alt="Game 2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/R/AC8E.jpg" alt="Game 3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/R/AEBE.jpg" alt="Game 4">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/R/AK2E.jpg" alt="Game 5">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/R/AR4E.jpg" alt="Game 6">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/R/AR5E.jpg" alt="Game 7">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/R/AR6E.jpg" alt="Game 8">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/R/ARBE.jpg" alt="Game 9">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/R/ARFE.jpg" alt="Game 10">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/R/ARGE.jpg" alt="Game 11">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/R/ARME.jpg" alt="Game 12">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/R/ARRE.jpg" alt="Game 13">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/R/ARTE.jpg" alt="Game 14">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/R/ARYE.jpg" alt="Game 15">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/R/BDJE.jpg" alt="Game 16">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/R/BRBE.jpg" alt="Game 17">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/R/BRPE.jpg" alt="Game 18">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/R/CDRE.jpg" alt="Game 19">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-S">
+                        <div class="letter-header">S</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/ACLE.jpg" alt="Game 1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/AD6E.jpg" alt="Game 2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/AFWE.jpg" alt="Game 3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/AG6E.jpg" alt="Game 4">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/AHEE.jpg" alt="Game 5">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/AHYE.jpg" alt="Game 6">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/AJ9E.jpg" alt="Game 7">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/AJAE.jpg" alt="Game 8">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/AJHE.jpg" alt="Game 9">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/AK3E.jpg" alt="Game 10">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/AKSE.jpg" alt="Game 11">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/AKZE.jpg" alt="Game 12">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/ALCE.jpg" alt="Game 13">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/ALLE.jpg" alt="Game 14">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/AMXE.jpg" alt="Game 15">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/ANRE.jpg" alt="Game 16">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/ANXE.jpg" alt="Game 17">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/AREE.jpg" alt="Game 18">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/ARVE.jpg" alt="Game 19">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/AS7E.jpg" alt="Game 20">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/ASBE.jpg" alt="Game 21">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/ASCZ.jpg" alt="Game 22">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/ASDE.jpg" alt="Game 23">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/ASGE.jpg" alt="Game 24">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/ASJE.jpg" alt="Game 25">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/ASLE.jpg" alt="Game 26">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/ASME.jpg" alt="Game 27">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/ASNE.jpg" alt="Game 28">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/ASPE.jpg" alt="Game 29">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/ASSE.jpg" alt="Game 30">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/ASVE.jpg" alt="Game 31">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/ASZE.jpg" alt="Game 32">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/AXCE.jpg" alt="Game 33">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/BB3E.jpg" alt="Game 34">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/BCUE.jpg" alt="Game 35">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/BG4E.jpg" alt="Game 36">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/BL5E.jpg" alt="Game 37">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/BNUE.jpg" alt="Game 38">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/BPEE.jpg" alt="Game 39">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/BPNE.jpg" alt="Game 40">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/BS3E.jpg" alt="Game 41">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/BS6E.jpg" alt="Game 42">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/BS9E.jpg" alt="Game 43">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/BSFE.jpg" alt="Game 44">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/BSYE.jpg" alt="Game 45">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/S/BTSE.jpg" alt="Game 46">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-T">
+                        <div class="letter-header">T</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/AABE.jpg" alt="Game 1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/AANE.jpg" alt="Game 2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/AGTE.jpg" alt="Game 3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/AHDE.jpg" alt="Game 4">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/AJRE.jpg" alt="Game 5">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/AN8E.jpg" alt="Game 6">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/ANYE.jpg" alt="Game 7">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/AQEE.jpg" alt="Game 8">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/AQRE.jpg" alt="Game 9">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/AS3E.jpg" alt="Game 10">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/AS4E.jpg" alt="Game 11">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/AS8E.jpg" alt="Game 12">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/AT9E.jpg" alt="Game 13">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/ATFE.jpg" alt="Game 14">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/ATHE.jpg" alt="Game 15">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/ATKE.jpg" alt="Game 16">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/ATLE.jpg" alt="Game 17">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/ATNE.jpg" alt="Game 18">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/ATPE.jpg" alt="Game 19">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/ATZE.jpg" alt="Game 20">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/AXYE.jpg" alt="Game 21">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/AYEE.jpg" alt="Game 22">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/BLDE.jpg" alt="Game 23">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/BLLE.jpg" alt="Game 24">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/BMUE.jpg" alt="Game 25">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/BNTE.jpg" alt="Game 26">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/BTEE.jpg" alt="Game 27">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/BTHE.jpg" alt="Game 28">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/BTKE.jpg" alt="Game 29">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/BTLE.jpg" alt="Game 30">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/BUSE.jpg" alt="Game 31">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/BZLE.jpg" alt="Game 32">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/T/EA3E.jpg" alt="Game 33">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+
+                        </div>
+                    </div>
+
+
+                    <div class="game-section" id="section-V">
+                        <div class="letter-header">V</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/3ds/V/AKGE.jpg" alt="Game 1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-W">
+                        <div class="letter-header">W</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/3ds/W/AW3E.jpg" alt="Game 1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/W/AWPE.jpg" alt="Game 2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/W/AWRE.jpg" alt="Game 3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/W/AWXA.jpg" alt="Game 4">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/W/AY8E.jpg" alt="Game 5">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/W/BWCE.jpg" alt="Game 6">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-X">
+                        <div class="letter-header">X</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/3ds/X/CAFE.jpg" alt="Game 1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-Y">
+                        <div class="letter-header">Y</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/3ds/Y/AJNE.jpg" alt="Game 1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/Y/ALZE.jpg" alt="Game 2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/Y/AYJE.jpg" alt="Game 3">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/Y/AYWE.jpg" alt="Game 4">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/Y/BYGE.jpg" alt="Game 5">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/Y/BYHE.jpg" alt="Game 6">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/Y/BYSE.jpg" alt="Game 7">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+
+                        </div>
+                    </div>
+
+                    <div class="game-section" id="section-Z">
+                        <div class="letter-header">Z</div>
+                        <div class="games">
+                            <figure class="figure-item">
+                                <img src="img/3ds/Z/AZOE.jpg" alt="Game 1">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+                            <figure class="figure-item">
+                                <img src="img/3ds/Z/BZEE.jpg" alt="Game 2">
+                                <figcaption class="special-caption">_GB</figcaption>
+                            </figure>
+
+
+                        </div>
+                    </div>
+
+                    <button class="volver-btn" onclick="window.location.href='index.html'">❌</button>
+
+                    <button class="inicio-btn" onclick="window.scrollTo(0, 0);">☝</button>
+
+                    <script>
+                        let totalGB = 0;
+                        const figures = document.querySelectorAll('.figure-item');
+                        const totalSuma = document.getElementById('total-suma');
+                        const mostrarSelecciones = document.getElementById('mostrar-selecciones');
+                        const cuadroSelecciones = document.getElementById('cuadro-selecciones');
+                        const listaSelecciones = document.getElementById('lista-selecciones');
+                        const totalSeleccionado = document.getElementById('total-seleccionado');
+                        const cerrarCuadro = document.getElementById('cerrar-cuadro');
+
+                        function updateTotal() {
+                            totalSuma.textContent = `Total: ${totalGB.toFixed(2)} GB`;
+                            totalSeleccionado.textContent = totalGB.toFixed(2);
+                        }
+
+                        figures.forEach((figure) => {
+                            figure.addEventListener('click', function () {
+                                const captionText = this.querySelector('.special-caption').textContent;
+                                let valueGB = 0;
+                                if (captionText.includes('_GB')) {
+                                    valueGB = parseFloat(captionText.replace('_GB', ''));
+                                } else if (captionText.includes('_MB')) {
+                                    valueGB = parseFloat(captionText.replace('_MB', '')) / 1024;
+                                }
+
+                                if (this.classList.contains('selected')) {
+                                    this.classList.remove('selected');
+                                    totalGB -= valueGB;
+                                } else {
+                                    this.classList.add('selected');
+                                    totalGB += valueGB;
+                                }
+
+                                updateTotal();
+                            });
+                        });
+
+                        mostrarSelecciones.addEventListener('click', () => {
+                            listaSelecciones.innerHTML = '';
+                            const selectedFigures = document.querySelectorAll('.figure-item.selected');
+                            selectedFigures.forEach((figure) => {
+                                const captionText = figure.querySelector('.special-caption').textContent;
+                                const imageSrc = figure.querySelector('img').src;
+
+                                const itemDiv = document.createElement('div');
+                                itemDiv.classList.add('item');
+
+                                const imgElement = document.createElement('img');
+                                imgElement.src = imageSrc;
+
+                                const captionElement = document.createElement('span');
+                                captionElement.textContent = captionText;
+
+                                const closeButton = document.createElement('button');
+                                closeButton.textContent = 'X';
+                                closeButton.classList.add('remove-btn');
+                                closeButton.addEventListener('click', () => {
+                                    if (confirm(`¿Deseas eliminar ${captionText}?`)) {
+                                        figure.classList.remove('selected');
+                                        let valueGB = 0;
+                                        if (captionText.includes('_GB')) {
+                                            valueGB = parseFloat(captionText.replace('_GB', ''));
+                                        } else if (captionText.includes('_MB')) {
+                                            valueGB = parseFloat(captionText.replace('_MB', '')) / 1024;
+                                        }
+                                        totalGB -= valueGB;
+                                        updateTotal();
+                                        itemDiv.remove();
+                                    }
+                                });
+
+                                itemDiv.appendChild(imgElement);
+                                itemDiv.appendChild(captionElement);
+                                itemDiv.appendChild(closeButton);
+
+                                listaSelecciones.appendChild(itemDiv);
+                            });
+
+                            updateTotal();
+                            cuadroSelecciones.style.display = 'block';
+                        });
+
+                        cerrarCuadro.addEventListener('click', () => {
+                            cuadroSelecciones.style.display = 'none';
+                        });
+                    </script>
+
+                    <script>
+                        const cuadro = document.getElementById('cuadro-selecciones');
+                        let isDragging = false;
+                        let offsetX = 0, offsetY = 0;
+
+                        // Asegurar que el cuadro tenga `position: absolute`
+                        cuadro.style.position = "block";
+
+                        // Evitar el desplazamiento de la página al mover el cuadro en móviles
+                        function disableScroll(e) {
+                            e.preventDefault();
+                        }
+
+                        // Evento para empezar a arrastrar con el mouse
+                        cuadro.addEventListener('mousedown', (e) => {
+                            isDragging = true;
+                            offsetX = e.clientX - cuadro.offsetLeft;
+                            offsetY = e.clientY - cuadro.offsetTop;
+                            cuadro.style.cursor = "grabbing";
+                        });
+
+                        // Evento para mover el cuadro con el mouse
+                        document.addEventListener('mousemove', (e) => {
+                            if (isDragging) {
+                                cuadro.style.left = `${e.clientX - offsetX}px`;
+                                cuadro.style.top = `${e.clientY - offsetY}px`;
+                            }
+                        });
+
+                        // Evento para soltar el cuadro con el mouse
+                        document.addEventListener('mouseup', () => {
+                            isDragging = false;
+                            cuadro.style.cursor = "grab";
+                        });
+
+                        // Evento para empezar a arrastrar con el tacto (evita scroll)
+                        cuadro.addEventListener('touchstart', (e) => {
+                            const touch = e.touches[0];
+                            isDragging = true;
+                            offsetX = touch.clientX - cuadro.offsetLeft;
+                            offsetY = touch.clientY - cuadro.offsetTop;
+                            cuadro.style.cursor = "grabbing";
+
+                            // Evitar que la página se desplace
+                            document.body.addEventListener('touchmove', disableScroll, { passive: false });
+                        });
+
+                        // Evento para mover el cuadro con el tacto
+                        document.addEventListener('touchmove', (e) => {
+                            if (isDragging) {
+                                const touch = e.touches[0];
+                                cuadro.style.left = `${touch.clientX - offsetX}px`;
+                                cuadro.style.top = `${touch.clientY - offsetY}px`;
+                            }
+                        });
+
+                        // Evento para soltar el cuadro con el tacto (reactivar scroll)
+                        document.addEventListener('touchend', () => {
+                            isDragging = false;
+                            cuadro.style.cursor = "grab";
+
+                            // Permitir que la página se desplace nuevamente
+                            document.body.removeEventListener('touchmove', disableScroll);
+                        });
+
+                    </script>
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", () => {
+                            const links = document.querySelectorAll(".abecedario a");
+                            const sections = document.querySelectorAll(".game-section");
+
+                            // 🔹 Mostrar solo la sección (#) al inicio
+                            sections.forEach(section => {
+                                section.style.display = section.id === "section-(#)" ? "block" : "none";
+                            });
+
+                            links.forEach(link => {
+                                link.addEventListener("click", e => {
+                                    e.preventDefault();
+                                    const targetId = link.getAttribute("href").substring(1);
+                                    const target = document.getElementById(targetId);
+
+                                    if (!target) return;
+
+                                    // 🔹 Evitar que (#) desaparezca al hacer clic otra vez
+                                    if (targetId === "section-(#)") {
+                                        sections.forEach(section => {
+                                            section.style.display = section.id === "section-(#)" ? "block" : "none";
+                                        });
+                                        return;
+                                    }
+
+                                    // Ocultar todas las secciones
+                                    sections.forEach(section => section.style.display = "none");
+
+                                    // Mostrar la sección seleccionada y sus padres
+                                    let current = target;
+                                    while (current && current.classList.contains("game-section")) {
+                                        current.style.display = "block";
+                                        current = current.parentElement.closest(".game-section");
+                                    }
+
+                                    // Desplazamiento suave hacia la sección elegida
+                                    target.scrollIntoView({ behavior: "smooth" });
+                                });
+                            });
+                        });
+                    </script>
+
+
+
+
+
+
+
+
+
+</body>
+
+
+
+</html>
